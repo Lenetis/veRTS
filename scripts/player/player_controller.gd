@@ -23,6 +23,9 @@ var view_hold_timer: float = 0
 
 var current_view: ViewMode.Mode = ViewMode.Mode.UNIT
 
+# array of units that are currently selected
+var active_units: Array[BaseUnit] = []
+
 signal view_toggled(new_view: ViewMode.Mode)
 
 signal unit_move(direction: Vector2)
@@ -34,9 +37,12 @@ signal satellite_action
 signal satellite_secondary
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass  # Replace with function body.
+func add_active_unit(unit: BaseUnit) -> void:
+	active_units.append(unit)
+
+
+func remove_active_unit(unit: BaseUnit) -> void:
+	active_units.erase(unit)
 
 
 func toggle_view() -> void:
@@ -64,6 +70,13 @@ func _process(delta: float) -> void:
 	if view_hold_timer >= view_toggle_hold_time:
 		toggle_view()
 		view_hold_timer = 0
+
+	if Input.is_key_pressed(KEY_K):
+		for unit in active_units:
+			unit.add_destination(Vector2(5, 5))
+	if Input.is_key_pressed(KEY_L):
+		for unit in active_units:
+			unit.add_destination(Vector2(-5, 5))
 
 
 func _unit_process(_delta: float) -> void:

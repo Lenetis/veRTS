@@ -2,13 +2,15 @@ class_name PlayerCamera
 
 extends Camera3D
 
+@onready var raycast = $RayCast3D
+
 @export var player: PlayerController
 
 @export_category("Satellite")
 @export var satellite_position_offset: Vector3 = Vector3(0, 30, 0)
 @export var satellite_rotation: Vector3 = Vector3(-90, 0, 0)
 @export var satellite_lerp_weight: float = 5
-@export var satellite_move_speed: float = 5
+@export var satellite_move_speed: float = 2.5
 
 @export_category("Unit")
 @export var unit_position_offset: Vector3 = Vector3(0, 5, 0)
@@ -38,6 +40,22 @@ func change_view(view_mode: ViewMode.Mode) -> void:
 		target_rotation = unit_rotation
 
 
+func on_move(direction: Vector2) -> void:
+	move_vector = Vectors.to_vector3(direction.normalized())
+
+
+func on_action() -> void:
+	var unit: BaseUnit = raycast.get_collider() as BaseUnit
+	if unit != null:
+		unit.activate()
+
+
+func on_secondary() -> void:
+	var unit: BaseUnit = raycast.get_collider() as BaseUnit
+	if unit != null:
+		unit.deactivate()
+
+
 func _process(delta: float) -> void:
 	match player.current_view:
 		ViewMode.Mode.UNIT:
@@ -58,15 +76,3 @@ func _satellite_process(delta: float) -> void:
 		target_position + satellite_position_offset, satellite_lerp_weight * delta
 	)
 	rotation_degrees = rotation_degrees.lerp(target_rotation, satellite_lerp_weight * delta)
-
-
-func on_move(direction: Vector2) -> void:
-	move_vector = Vectors.to_vector3(direction.normalized())
-
-
-func on_action() -> void:
-	print("sAction!")
-
-
-func on_secondary() -> void:
-	print("sSecondary!")
