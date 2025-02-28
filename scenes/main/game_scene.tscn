@@ -1,9 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://bl3poscqf6l24"]
+[gd_scene load_steps=7 format=3 uid="uid://bl3poscqf6l24"]
 
 [ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_6hfpe"]
 [ext_resource type="Script" path="res://scripts/units/base_unit.gd" id="2_l80nj"]
+[ext_resource type="Script" path="res://scripts/camera/player_camera.gd" id="3_dcxap"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_a42ac"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gopso"]
+albedo_color = Color(0.581033, 0.581033, 0.581033, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_f8yox"]
+material = SubResource("StandardMaterial3D_gopso")
+top_radius = 50.0
+bottom_radius = 50.0
+height = 0.05
 
 [node name="GameScene" type="Node3D"]
 
@@ -26,7 +36,24 @@ speed = 1.0
 turn_speed = 1.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BaseUnit"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("BoxMesh_a42ac")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.880436, 0.474165, 0, -0.474165, 0.880436, 0, 2.61602, 3.13383)
+[node name="PlayerCamera" type="Camera3D" parent="." node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35182, 2.88782)
+script = ExtResource("3_dcxap")
+player = NodePath("../PlayerController")
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Environment"]
+mesh = SubResource("CylinderMesh_f8yox")
+skeleton = NodePath("../..")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.205854, -0.636579, 0.74323, -0.912368, 0.149779, 0.380987, -0.353849, -0.756527, -0.549962, 0, 3.51522, 0)
+shadow_enabled = true
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.00991089, -0.951069, 0.308817, 0.499897, 0.272183, 0.822204, -0.866028, 0.146228, 0.478135, 0, 3.51522, 0)
+shadow_enabled = true

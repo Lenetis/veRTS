@@ -8,17 +8,17 @@ extends Node3D
 ## Whether the unit listens and reacts to the owner signals
 @export var active: bool = true
 
-## Global position where the unit wants to go
-@export var destination: Vector2
-
 @export_category("Stats")
 @export var hp: float = 100
 @export var damage: float = 25
 @export var cooldown: float = 2
+@export var range: float = 5
 @export var speed: float = 2
 @export var turn_speed: float = 2
 @export var turn_in_place: bool = true
 
+# global position where the unit wants to go
+var destination: Vector2
 var is_moving: bool = false
 
 
@@ -28,28 +28,28 @@ func _ready() -> void:
 
 
 func activate() -> void:
-	player.unit_move.connect(move)
-	player.unit_action.connect(action)
-	player.unit_secondary.connect(secondary)
+	player.unit_move.connect(on_move)
+	player.unit_action.connect(on_action)
+	player.unit_secondary.connect(on_secondary)
 
 
 func deactivate() -> void:
-	player.unit_move.disconnect(move)
-	player.unit_action.disconnect(action)
-	player.unit_secondary.disconnect(secondary)
+	player.unit_move.disconnect(on_move)
+	player.unit_action.disconnect(on_action)
+	player.unit_secondary.disconnect(on_secondary)
 
 
-func move(direction: Vector2) -> void:
+func on_move(direction: Vector2) -> void:
 	is_moving = true
 	destination = Vectors.to_vector2(position) + direction * speed
 	print(destination)
 
 
-func action() -> void:
+func on_action() -> void:
 	print("Action!")
 
 
-func secondary() -> void:
+func on_secondary() -> void:
 	print("Secondary!")
 
 
