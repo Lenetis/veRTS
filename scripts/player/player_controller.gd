@@ -5,6 +5,23 @@ extends Node
 ## Controls everything that has to do with the player - captures key inputs
 ## and performs all appropriate actions.
 
+enum State { ZOOM, SELECT, ORDER, WEAPON }
+
+const SATELLITE_STATES: Array[State] = [State.ZOOM, State.SELECT, State.ORDER, State.WEAPON]
+
+var state_action_dict: Dictionary = {
+	State.ZOOM: satellite_zoom,
+	State.SELECT: satellite_select,
+	State.ORDER: satellite_order,
+	State.WEAPON: satellite_weapon,
+}
+var state_secondary_dict: Dictionary = {
+	State.ZOOM: satellite_unzoom,
+	State.SELECT: satellite_deselect,
+	State.ORDER: satellite_cancel_order,
+	State.WEAPON: satellite_weapon2,
+}
+
 # Keys responsible for movement
 @export var key_up: Key
 @export var key_down: Key
@@ -22,9 +39,15 @@ extends Node
 var view_hold_timer: float = 0
 
 var current_view: ViewMode.Mode = ViewMode.Mode.UNIT
+var current_state: State = State.ZOOM
 
 # array of units that are currently selected
 var active_units: Array[BaseUnit] = []
+
+var menu_is_open: bool = false
+
+var key_action_just_pressed: bool = false
+var key_secondary_just_pressed: bool = false
 
 signal view_toggled(new_view: ViewMode.Mode)
 
@@ -33,8 +56,18 @@ signal unit_action
 signal unit_secondary
 
 signal satellite_move(direction: Vector2)
-signal satellite_action
-signal satellite_secondary
+
+signal satellite_zoom
+signal satellite_unzoom
+
+signal satellite_order
+signal satellite_cancel_order
+
+signal satellite_select
+signal satellite_deselect
+
+signal satellite_weapon
+signal satellite_weapon2
 
 
 func add_active_unit(unit: BaseUnit) -> void:
@@ -45,7 +78,9 @@ func remove_active_unit(unit: BaseUnit) -> void:
 	active_units.erase(unit)
 
 
+## Toggles between unit and satellite view mode
 func toggle_view() -> void:
+	menu_is_open = false
 	print("Toggle! From: ", current_view)
 	if current_view == ViewMode.Mode.UNIT:
 		current_view = ViewMode.Mode.SATELLITE
@@ -55,7 +90,33 @@ func toggle_view() -> void:
 	view_toggled.emit(current_view)
 
 
+## Switches state in satellite mode, by the given offset
+func switch_state(offset: int) -> void:
+	print("switch satellite state. From: ", current_state)
+	var current_state_index: int = SATELLITE_STATES.find(current_state)
+	var new_state_index: int = (current_state_index + offset) % SATELLITE_STATES.size()
+	current_state = SATELLITE_STATES[new_state_index]
+	print("To: ", current_state)
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	event = event as InputEventKey  # should always cast correctly
+	if event.is_released() and event.keycode == key_option:
+		if view_hold_timer > 0 and view_hold_timer < 0.5 * view_toggle_hold_time:
+			menu_is_open = not menu_is_open
+			print("Menu is open: ", menu_is_open)
+
+	elif event.is_pressed():
+		if event.keycode == key_action:
+			key_action_just_pressed = true
+		elif event.keycode == key_secondary:
+			key_secondary_just_pressed = true
+
+
 func _process(delta: float) -> void:
+	if menu_is_open:
+		_menu_process(delta)
+
 	match current_view:
 		ViewMode.Mode.UNIT:
 			_unit_process(delta)
@@ -69,14 +130,17 @@ func _process(delta: float) -> void:
 
 	if view_hold_timer >= view_toggle_hold_time:
 		toggle_view()
-		view_hold_timer = 0
+		view_hold_timer = -1000000  # spaghetti TODO
 
-	if Input.is_key_pressed(KEY_K):
-		for unit in active_units:
-			unit.add_destination(Vector2(5, 5))
-	if Input.is_key_pressed(KEY_L):
-		for unit in active_units:
-			unit.add_destination(Vector2(-5, 5))
+	key_action_just_pressed = false
+	key_secondary_just_pressed = false
+
+
+func _menu_process(_delta: float) -> void:
+	if key_action_just_pressed:
+		switch_state(-1)
+	if key_secondary_just_pressed:
+		switch_state(1)
 
 
 func _unit_process(_delta: float) -> void:
@@ -114,8 +178,23 @@ func _satellite_process(_delta: float) -> void:
 	if move_vector != Vector2.ZERO:
 		satellite_move.emit(move_vector)
 
-	if Input.is_key_pressed(key_action):
-		satellite_action.emit()
+	if not menu_is_open:
+		# these states should send continous signals (every frame)
+		if current_state in [State.ZOOM, State.SELECT]:
+			if Input.is_key_pressed(key_action):
+				var action_signal: Signal = state_action_dict[current_state]
+				action_signal.emit()
 
-	if Input.is_key_pressed(key_secondary):
-		satellite_secondary.emit()
+			if Input.is_key_pressed(key_secondary):
+				var action_signal: Signal = state_secondary_dict[current_state]
+				action_signal.emit()
+
+		# other states should send signals on press only
+		else:
+			if key_action_just_pressed:
+				var action_signal: Signal = state_action_dict[current_state]
+				action_signal.emit()
+
+			if key_secondary_just_pressed:
+				var action_signal: Signal = state_secondary_dict[current_state]
+				action_signal.emit()

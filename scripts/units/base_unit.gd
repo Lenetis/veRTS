@@ -2,6 +2,10 @@ class_name BaseUnit
 
 extends Area3D
 
+## When a new destination is added, that is closer
+## to the last destination than this value, it will be skipped
+const MIN_NEW_DESTINATION_DISTANCE: float = 0.1
+
 ## The owner of this unit
 @export var player: PlayerController
 
@@ -44,7 +48,16 @@ func deactivate() -> void:
 
 
 func add_destination(destination: Vector2) -> void:
+	if destinations.size() > 0:
+		var last_destination: Vector2 = destinations[destinations.size() - 1]
+		if destination.distance_to(last_destination) < MIN_NEW_DESTINATION_DISTANCE:
+			return
+
 	destinations.append(destination)
+
+
+func pop_destination() -> void:
+	destinations.pop_back()
 
 
 func on_move(direction: Vector2) -> void:
