@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://qqhrjtb8v3ak"]
+[gd_scene load_steps=4 format=3 uid="uid://due364vqe8myb"]
 
-[ext_resource type="Script" path="res://scripts/units/factory.gd" id="1_kfomf"]
+[ext_resource type="Script" path="res://scripts/units/building.gd" id="1_kfomf"]
 [ext_resource type="PackedScene" uid="uid://5voogggaqiqc" path="res://scenes/units/base_unit_instantiable.tscn" id="2_05dry"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_xtf4f"]

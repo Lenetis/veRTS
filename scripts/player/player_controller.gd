@@ -29,6 +29,9 @@ var state_secondary_dict: Dictionary = {
 ## Buildable buildings that can be built
 @export var buildings: Array[PackedScene]
 
+@export var money: float = 750
+@export var base_income: float = 10
+
 # Keys responsible for movement
 @export var key_up: Key
 @export var key_down: Key
@@ -90,6 +93,13 @@ func remove_active_unit(unit: BaseUnit) -> void:
 	active_units.erase(unit)
 
 
+func pay_money(amount: float) -> bool:
+	if money >= amount:
+		money -= amount
+		return true
+	return false
+
+
 ## Toggles between unit and satellite view mode
 func toggle_view() -> void:
 	menu_is_open = false
@@ -148,6 +158,8 @@ func _process(delta: float) -> void:
 
 	key_action_just_pressed = false
 	key_secondary_just_pressed = false
+
+	money += base_income * delta
 
 
 func _calculate_move_vector() -> void:

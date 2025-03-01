@@ -72,7 +72,10 @@ func try_build(building: PackedScene) -> void:
 	if base != null and base.player == player:
 		var build_position: Vector3 = base_raycast.get_collision_point()
 		build_position.y = 0
-		var new_building: BaseUnit = building.instantiate()
+		var new_building: Building = building.instantiate()
+		if not player.pay_money(new_building.cost):
+			new_building.queue_free()  # this is very stupid and I am sorry
+			return
 		new_building.player = player
 		new_building.position = build_position
 		get_tree().get_root().add_child(new_building)

@@ -1,7 +1,8 @@
-class_name Factory
+class_name Building
 
 extends BaseUnit
 
+@export var cost: float = 1000
 @export var spawned_unit: PackedScene
 @export var unit_spawn_time: float = 10
 @export var unit_spawn_distance: float = 3
@@ -10,6 +11,8 @@ var current_unit_spawn_time: float = 0
 
 
 func _spawn_unit() -> void:
+	if spawned_unit == null:
+		return
 	var new_unit: BaseUnit = spawned_unit.instantiate()
 	new_unit.player = self.player
 
