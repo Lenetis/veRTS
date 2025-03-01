@@ -205,11 +205,11 @@ mesh = SubResource("BoxMesh_bucfs")
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, -4.30166)
 mesh = SubResource("BoxMesh_4pg0m")
 
-[node name="CaptureZone" type="Area3D" parent="."]
+[node name="CaptureZone" type="Area3D" parent="." groups=["ground"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.215312, 0, -19.1354)
 script = ExtResource("6_2x8eb")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CaptureZone"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CaptureZone" groups=["ground"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.926674, 0)
 mesh = SubResource("CylinderMesh_5nta1")
 

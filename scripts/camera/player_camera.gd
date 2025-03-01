@@ -82,10 +82,19 @@ func try_build(building: PackedScene) -> void:
 
 func try_shoot(projectile: PackedScene) -> bool:
 	var collider: Area3D = base_raycast.get_collider()
+	var ok: bool = false
 	if collider != null and collider.is_in_group("ground"):
+		ok = true
+	else:
+		var base: PlayerBase = collider as PlayerBase
+		if base != null and base.player == player:
+			ok = true
+
+	if ok:
 		var new_projectile: BaseProjectile = projectile.instantiate()
 		new_projectile.position = base_raycast.get_collision_point()
 		new_projectile.position.y = 0
+		new_projectile.player = player
 		get_tree().get_root().add_child(new_projectile)
 		return true
 	return false
