@@ -9,7 +9,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_mi6dc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gopso"]
-albedo_color = Color(0.581033, 0.581033, 0.581033, 1)
+albedo_color = Color(0.446777, 0.446777, 0.446777, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_f8yox"]
 material = SubResource("StandardMaterial3D_gopso")
@@ -19,19 +19,9 @@ height = 0.05
 
 [node name="GameScene" type="Node3D"]
 
-[node name="PlayerController" type="Node" parent="."]
-script = ExtResource("1_6hfpe")
-key_up = 4194320
-key_down = 4194322
-key_left = 4194319
-key_right = 4194321
-key_action = 90
-key_secondary = 88
-key_option = 67
-
 [node name="BaseUnit" type="Area3D" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("2_l80nj")
-player = NodePath("../PlayerController")
+player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BaseUnit"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -40,9 +30,6 @@ mesh = SubResource("BoxMesh_a42ac")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BaseUnit"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_mi6dc")
-
-[node name="PlayerCamera" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_dwn4k")]
-player = NodePath("../PlayerController")
 
 [node name="Environment" type="Node" parent="."]
 
@@ -57,3 +44,59 @@ shadow_enabled = true
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(0.00991089, -0.951069, 0.308817, 0.499897, 0.272183, 0.822204, -0.866028, 0.146228, 0.478135, 0, 3.51522, 0)
 shadow_enabled = true
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="GridContainer/SubViewportContainer"]
+size = Vector2i(574, 648)
+
+[node name="PlayerController" type="Node" parent="GridContainer/SubViewportContainer/SubViewport"]
+script = ExtResource("1_6hfpe")
+key_up = 4194320
+key_down = 4194322
+key_left = 4194319
+key_right = 4194321
+key_action = 4194439
+key_secondary = 4194440
+key_option = 4194441
+
+[node name="PlayerCamera" parent="GridContainer/SubViewportContainer/SubViewport/PlayerController" node_paths=PackedStringArray("player") instance=ExtResource("3_dwn4k")]
+player = NodePath("..")
+
+[node name="SubViewportContainer2" type="SubViewportContainer" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="GridContainer/SubViewportContainer2"]
+handle_input_locally = false
+size = Vector2i(574, 648)
+render_target_update_mode = 4
+
+[node name="PlayerController2" type="Node" parent="GridContainer/SubViewportContainer2/SubViewport"]
+script = ExtResource("1_6hfpe")
+key_up = 87
+key_down = 83
+key_left = 65
+key_right = 68
+key_action = 90
+key_secondary = 88
+key_option = 67
+
+[node name="PlayerCamera" parent="GridContainer/SubViewportContainer2/SubViewport/PlayerController2" node_paths=PackedStringArray("player") instance=ExtResource("3_dwn4k")]
+player = NodePath("..")
