@@ -2,12 +2,11 @@ class_name BaseUnit
 
 extends RigidBody3D
 
-## WARNING, UNIT NEEDS A CANNON AS ITS DIRECT CHILD
+## WARNING, UNIT NEEDS A CANNON AS ITS DIRECT CHILD IF IT IS SUPPOSED TO SHOOT
 
 @onready var range_area = $RangeArea3D
 @onready var range_area_shape = $RangeArea3D/CollisionShape3D
-
-@onready var cannon = $Cannon
+var cannon: Cannon
 
 ## When a new destination is added, that is closer
 ## to the last destination than this value, it will be skipped
@@ -63,12 +62,16 @@ func _ready() -> void:
 	axis_lock_angular_x = true
 	axis_lock_angular_z = true
 
+	if has_node("Cannon"):
+		cannon = $Cannon
+
 	if not movable:
 		axis_lock_linear_x = true
 		axis_lock_linear_z = true
 		axis_lock_angular_y = true
 
-	range_area_shape.shape.radius = attack_range
+	if range_area_shape != null:
+		range_area_shape.shape.radius = attack_range
 
 	current_cooldown = cooldown
 	current_hp = hp
@@ -142,7 +145,8 @@ func try_shoot(skip_when_no_target: bool = true) -> void:
 
 
 func _shoot(target: Vector3) -> void:
-	cannon.shoot(target)
+	if cannon != null:
+		cannon.shoot(target)
 
 
 func take_damage(damage: float) -> void:

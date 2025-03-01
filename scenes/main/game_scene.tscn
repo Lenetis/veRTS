@@ -1,13 +1,15 @@
-[gd_scene load_steps=18 format=3 uid="uid://bl3poscqf6l24"]
+[gd_scene load_steps=21 format=3 uid="uid://bl3poscqf6l24"]
 
 [ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_6hfpe"]
+[ext_resource type="PackedScene" uid="uid://5voogggaqiqc" path="res://scenes/base_unit_instantiable.tscn" id="1_m3rv1"]
 [ext_resource type="Script" path="res://scripts/units/cannon.gd" id="2_jftvp"]
 [ext_resource type="PackedScene" uid="uid://d3asdrwosebv" path="res://scenes/base_projectile.tscn" id="3_4hi1f"]
 [ext_resource type="PackedScene" uid="uid://ihcpxxxd43ji" path="res://scenes/player_camera.tscn" id="3_dwn4k"]
-[ext_resource type="PackedScene" uid="uid://cyteavm5mqnuf" path="res://scenes/base_unit.tscn" id="4_2lr8e"]
+[ext_resource type="PackedScene" uid="uid://bmkkq4ysahu5o" path="res://scenes/base_unit.tscn" id="4_2lr8e"]
 [ext_resource type="Script" path="res://scripts/capture_zone/capture_zone.gd" id="6_2x8eb"]
+[ext_resource type="Script" path="res://scripts/units/factory.gd" id="7_17idu"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_8m78n"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_yhh65"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_hm337"]
 
@@ -17,7 +19,7 @@ size = Vector3(1, 0.415, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_nsn6b"]
 size = Vector3(0.1, 0.1, 2)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_yhh65"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8m78n"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gopso"]
 albedo_color = Color(0.446777, 0.446777, 0.446777, 1)
@@ -40,31 +42,13 @@ top_radius = 5.0
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_xjs1e"]
 radius = 5.0
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xtf4f"]
+
 [node name="GameScene" type="Node3D"]
 
-[node name="BaseUnit" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_2lr8e")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.396983, 0, -11.9903)
+[node name="BaseUnit" parent="." node_paths=PackedStringArray("player") instance=ExtResource("1_m3rv1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.98139, 0, -11.12)
 player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
-start_selected = true
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BaseUnit"]
-shape = SubResource("CylinderShape3D_8m78n")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BaseUnit"]
-mesh = SubResource("CylinderMesh_hm337")
-
-[node name="Cannon" type="Node3D" parent="BaseUnit"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.715633, 0)
-script = ExtResource("2_jftvp")
-projectile = ExtResource("3_4hi1f")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BaseUnit/Cannon"]
-mesh = SubResource("BoxMesh_tvbdu")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="BaseUnit/Cannon/MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.20277)
-mesh = SubResource("BoxMesh_nsn6b")
 
 [node name="BaseUnit3" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_2lr8e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.027, 0, -11.99)
@@ -208,3 +192,15 @@ mesh = SubResource("CylinderMesh_5nta1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CaptureZone"]
 shape = SubResource("CylinderShape3D_xjs1e")
+
+[node name="Factory" type="RigidBody3D" parent="." node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.24743, 0, -11.316)
+script = ExtResource("7_17idu")
+spawned_unit = ExtResource("1_m3rv1")
+unit_spawn_time = 2.0
+player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
+movable = false
+cooldown = 1e+09
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Factory"]
+mesh = SubResource("CapsuleMesh_xtf4f")
