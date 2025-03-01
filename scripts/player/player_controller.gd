@@ -163,10 +163,10 @@ func _unit_process(_delta: float) -> void:
 	if move_vector != Vector2.ZERO:
 		unit_move.emit(move_vector)
 
-	if Input.is_key_pressed(key_action):
+	if key_action_just_pressed:
 		unit_action.emit()
 
-	if Input.is_key_pressed(key_secondary):
+	if key_secondary_just_pressed:
 		unit_secondary.emit()
 
 

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyteavm5mqnuf"]
+
+[ext_resource type="Script" path="res://scripts/units/base_unit.gd" id="1_xbya7"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dw8wa"]
+
+[node name="BaseUnit4" type="RigidBody3D"]
+script = ExtResource("1_xbya7")
+
+[node name="RangeArea3D" type="Area3D" parent="."]
+collision_layer = 0
+input_ray_pickable = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RangeArea3D"]
+shape = SubResource("SphereShape3D_dw8wa")

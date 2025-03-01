@@ -72,8 +72,10 @@ func on_select() -> void:
 
 
 func on_deselect() -> void:
-	var unit: BaseUnit = raycast.get_collider() as BaseUnit
-	if unit != null:
+	#var unit: BaseUnit = raycast.get_collider() as BaseUnit
+	#if unit != null:
+	#	unit.deactivate()
+	for unit in player.active_units:  # deselect all units
 		unit.deactivate()
 
 

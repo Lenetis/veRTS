@@ -2,6 +2,13 @@ class_name BaseUnit
 
 extends RigidBody3D
 
+## WARNING, UNIT NEEDS A CANNON AS ITS DIRECT CHILD
+
+@onready var range_area = $RangeArea3D
+@onready var range_area_shape = $RangeArea3D/CollisionShape3D
+
+@onready var cannon = $Cannon
+
 ## When a new destination is added, that is closer
 ## to the last destination than this value, it will be skipped
 const MIN_NEW_DESTINATION_DISTANCE: float = 0.1
@@ -23,12 +30,17 @@ const STUCK_TIME_TO_CANCEL_ORDER: float = 1
 
 @export_category("Stats")
 @export var hp: float = 100
-@export var damage: float = 25
 @export var cooldown: float = 2
-@export var attack_range: float = 5
+@export var attack_range: float = 25
 @export var speed: float = 2
 @export var turn_speed: float = 2
 @export var turn_in_place: bool = true
+
+# the unit needs to wait this time before being able to shoot again
+var current_cooldown: float
+
+# current value of the unit's hp. If it reaches 0, the unit dies
+var current_hp: float
 
 # array of global positions where the unit wants to go
 var destinations: Array[Vector2]
@@ -44,6 +56,11 @@ func _ready() -> void:
 	axis_lock_linear_y = true
 	axis_lock_angular_x = true
 	axis_lock_angular_z = true
+
+	range_area_shape.shape.radius = attack_range
+
+	current_cooldown = cooldown
+	current_hp = hp
 
 	if start_selected:
 		activate()
@@ -84,17 +101,64 @@ func pop_destination() -> void:
 	destinations.pop_back()
 
 
+func get_enemies_in_range() -> Array[BaseUnit]:
+	var enemies: Array[BaseUnit] = []
+	for body in range_area.get_overlapping_bodies():
+		var unit: BaseUnit = body as BaseUnit
+		if unit != null and unit.player != player:
+			enemies.append(unit)
+
+	return enemies
+
+
+func try_shoot(skip_when_no_target: bool = true) -> void:
+	if current_cooldown <= 0:
+		current_cooldown = cooldown
+		var enemies: Array[BaseUnit] = get_enemies_in_range()
+		var target: Vector3 = (
+			position + Vector3.FORWARD.rotated(Vector3.UP, rotation.y) * attack_range
+		)  # shoot where the unit is facing if no target  #global_transform.basis.xform(Vector3.FORWARD)
+		if enemies.size() > 0:
+			target = enemies.pick_random().position
+			_shoot(target)
+		elif skip_when_no_target == false:
+			_shoot(target)
+
+
+func _shoot(target: Vector3) -> void:
+	cannon.shoot(target)
+
+
+func take_damage(damage: float) -> void:
+	self.current_hp -= damage
+	if self.current_hp <= 0:
+		die()
+
+
+func die() -> void:
+	self.deactivate()
+	queue_free()
+
+
 func on_move(direction: Vector2) -> void:
 	destinations.clear()
 	destinations.append(Vectors.to_vector2(position) + direction * speed * MANUAL_MOVE_TIME)
 
 
 func on_action() -> void:
-	print("Action!")
+	try_shoot(false)
 
 
 func on_secondary() -> void:
 	print("Secondary!")
+
+
+func _process(delta: float) -> void:
+	current_cooldown -= delta
+
+	if player.current_view != ViewMode.Mode.UNIT or not active:
+		if current_cooldown <= 0:
+			try_shoot()
 
 
 func _physics_process(delta: float) -> void:
@@ -109,6 +173,8 @@ func _physics_process(delta: float) -> void:
 			return
 
 		move(delta)
+
+		look_at(position + linear_velocity)
 	else:
 		stuck_time = 0
 		linear_velocity = Vector3.ZERO
