@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bl3poscqf6l24"]
+[gd_scene load_steps=10 format=3 uid="uid://bl3poscqf6l24"]
 
 [ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_6hfpe"]
 [ext_resource type="Script" path="res://scripts/units/base_unit.gd" id="2_l80nj"]
@@ -6,7 +6,11 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_a42ac"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_mi6dc"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_tmc6i"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7wnhc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_64oap"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gopso"]
 albedo_color = Color(0.446777, 0.446777, 0.446777, 1)
@@ -19,9 +23,10 @@ height = 0.05
 
 [node name="GameScene" type="Node3D"]
 
-[node name="BaseUnit" type="Area3D" parent="." node_paths=PackedStringArray("player")]
+[node name="BaseUnit" type="RigidBody3D" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("2_l80nj")
 player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
+start_selected = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BaseUnit"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -29,7 +34,33 @@ mesh = SubResource("BoxMesh_a42ac")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BaseUnit"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("BoxShape3D_mi6dc")
+shape = SubResource("BoxShape3D_tmc6i")
+
+[node name="BaseUnit2" type="RigidBody3D" parent="." node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.09587, 0, 0)
+script = ExtResource("2_l80nj")
+player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BaseUnit2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_a42ac")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BaseUnit2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_7wnhc")
+
+[node name="BaseUnit3" type="RigidBody3D" parent="." node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.70143)
+script = ExtResource("2_l80nj")
+player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BaseUnit3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_a42ac")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BaseUnit3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_64oap")
 
 [node name="Environment" type="Node" parent="."]
 
