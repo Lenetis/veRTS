@@ -5,8 +5,12 @@ extends Camera3D
 ## NEEDS TO BE A CHILD OF PLAYER CONTROLLER
 
 @onready var raycast = $RayCast3D
+@onready var base_raycast = $RayCast3DBase
 
 @export var player: PlayerController
+
+@export var projectile_small: PackedScene
+@export var projectile_big: PackedScene
 
 @export_category("Satellite")
 @export var satellite_position_offset: Vector3 = Vector3(0, 30, 0)
@@ -45,6 +49,8 @@ func _ready() -> void:
 	player.satellite_cancel_order.connect(on_cancel_order)
 	player.satellite_weapon.connect(on_weapon)
 	player.satellite_weapon2.connect(on_weapon2)
+	player.satellite_build.connect(on_build)
+	player.satellite_build2.connect(on_build2)
 
 
 func change_view(view_mode: ViewMode.Mode) -> void:
@@ -53,6 +59,28 @@ func change_view(view_mode: ViewMode.Mode) -> void:
 		target_rotation = satellite_rotation
 	else:
 		target_rotation = unit_rotation
+
+
+func try_build(building: PackedScene) -> void:
+	var base: PlayerBase = base_raycast.get_collider() as PlayerBase
+	if base != null and base.player == player:
+		var build_position: Vector3 = base_raycast.get_collision_point()
+		build_position.y = 0
+		var new_building: BaseUnit = building.instantiate()
+		new_building.player = player
+		new_building.position = build_position
+		get_tree().get_root().add_child(new_building)
+	else:
+		print("Cannot build")
+
+
+func try_shoot(projectile: PackedScene) -> void:
+	var collider: Area3D = base_raycast.get_collider()
+	if collider != null and collider.is_in_group("ground"):
+		var new_projectile: BaseProjectile = projectile.instantiate()
+		new_projectile.position = base_raycast.get_collision_point()
+		new_projectile.position.y = 0
+		get_tree().get_root().add_child(new_projectile)
 
 
 func on_move(direction: Vector2) -> void:
@@ -71,7 +99,7 @@ func on_unzoom() -> void:
 
 func on_select() -> void:
 	var unit: BaseUnit = raycast.get_collider() as BaseUnit
-	if unit != null:
+	if unit != null and unit.player == player:
 		unit.activate()
 
 
@@ -94,11 +122,19 @@ func on_cancel_order() -> void:
 
 
 func on_weapon() -> void:
-	print("BUM")
+	try_shoot(projectile_small)
 
 
 func on_weapon2() -> void:
-	print("BUM2")
+	try_shoot(projectile_big)
+
+
+func on_build() -> void:
+	try_build(player.buildings[0])
+
+
+func on_build2() -> void:
+	try_build(player.buildings[1])
 
 
 func _process(delta: float) -> void:

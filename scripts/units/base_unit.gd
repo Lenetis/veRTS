@@ -36,7 +36,7 @@ const AUTO_FIRE_DELAY = 0.3333
 @export_category("Stats")
 @export var hp: float = 100
 @export var cooldown: float = 2
-@export var attack_range: float = 25
+@export var attack_range: float = 15
 @export var speed: float = 2
 @export var turn_speed: float = 2
 @export var turn_in_place: bool = true

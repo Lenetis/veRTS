@@ -18,7 +18,6 @@ func _ready():
 
 func _process(delta):
 	if units.size() == 1:
-		print(units)
 		var player: PlayerController = units.keys()[0]
 		if current_capture_time == 0:
 			capturing_player = player
@@ -33,6 +32,9 @@ func _process(delta):
 
 	if current_capture_time < 0:
 		current_capture_time = 0
+
+	if current_capture_time != 0:
+		print(current_capture_time)
 
 	if current_capture_time >= time_to_capture:
 		print("VICTORY!!! ", capturing_player)

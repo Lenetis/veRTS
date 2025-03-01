@@ -5,22 +5,29 @@ extends Node3D
 ## Controls everything that has to do with the player - captures key inputs
 ## and performs all appropriate actions.
 
-enum State { ZOOM, SELECT, ORDER, WEAPON }
+enum State { ZOOM, SELECT, ORDER, WEAPON, BUILD }
 
-const SATELLITE_STATES: Array[State] = [State.ZOOM, State.SELECT, State.ORDER, State.WEAPON]
+const SATELLITE_STATES: Array[State] = [
+	State.ZOOM, State.SELECT, State.ORDER, State.WEAPON, State.BUILD
+]
 
 var state_action_dict: Dictionary = {
 	State.ZOOM: satellite_zoom,
 	State.SELECT: satellite_select,
 	State.ORDER: satellite_order,
 	State.WEAPON: satellite_weapon,
+	State.BUILD: satellite_build,
 }
 var state_secondary_dict: Dictionary = {
 	State.ZOOM: satellite_unzoom,
 	State.SELECT: satellite_deselect,
 	State.ORDER: satellite_cancel_order,
 	State.WEAPON: satellite_weapon2,
+	State.BUILD: satellite_build2,
 }
+
+## Buildable buildings that can be built
+@export var buildings: Array[PackedScene]
 
 # Keys responsible for movement
 @export var key_up: Key
@@ -70,6 +77,9 @@ signal satellite_deselect
 
 signal satellite_weapon
 signal satellite_weapon2
+
+signal satellite_build
+signal satellite_build2
 
 
 func add_active_unit(unit: BaseUnit) -> void:

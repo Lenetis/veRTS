@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://qqhrjtb8v3ak"]
+
+[ext_resource type="Script" path="res://scripts/units/factory.gd" id="1_kfomf"]
+[ext_resource type="PackedScene" uid="uid://5voogggaqiqc" path="res://scenes/units/base_unit_instantiable.tscn" id="2_05dry"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xtf4f"]
+
+[node name="Factory" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.24743, 0, -11.316)
+script = ExtResource("1_kfomf")
+spawned_unit = ExtResource("2_05dry")
+movable = false
+cooldown = 1e+09
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_xtf4f")

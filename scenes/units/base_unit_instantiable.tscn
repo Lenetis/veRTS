@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/units/base_unit.gd" id="1_utiki"]
 [ext_resource type="Script" path="res://scripts/units/cannon.gd" id="2_4sxo3"]
-[ext_resource type="PackedScene" uid="uid://d3asdrwosebv" path="res://scenes/base_projectile.tscn" id="3_2boei"]
+[ext_resource type="PackedScene" uid="uid://d3asdrwosebv" path="res://scenes/projectiles/base_projectile.tscn" id="3_2boei"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_dw8wa"]
 

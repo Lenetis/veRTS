@@ -5,6 +5,7 @@ extends Area3D
 @export var speed: float = 10
 @export var damage: float = 10
 @export var lifetime: float = 5
+@export var die_on_hit: bool = true
 
 var current_lifetime: float
 
@@ -32,4 +33,6 @@ func _on_body_entered(body: RigidBody3D) -> void:
 	var unit: BaseUnit = body as BaseUnit
 	if unit.player != player:
 		unit.take_damage(damage)
-		queue_free()
+
+		if die_on_hit:
+			queue_free()
