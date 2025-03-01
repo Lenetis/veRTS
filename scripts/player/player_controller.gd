@@ -49,6 +49,8 @@ var menu_is_open: bool = false
 var key_action_just_pressed: bool = false
 var key_secondary_just_pressed: bool = false
 
+var move_vector: Vector2 = Vector2.ZERO
+
 signal view_toggled(new_view: ViewMode.Mode)
 
 signal unit_move(direction: Vector2)
@@ -117,6 +119,8 @@ func _process(delta: float) -> void:
 	if menu_is_open:
 		_menu_process(delta)
 
+	_calculate_move_vector()
+
 	match current_view:
 		ViewMode.Mode.UNIT:
 			_unit_process(delta)
@@ -136,15 +140,8 @@ func _process(delta: float) -> void:
 	key_secondary_just_pressed = false
 
 
-func _menu_process(_delta: float) -> void:
-	if key_action_just_pressed:
-		switch_state(-1)
-	if key_secondary_just_pressed:
-		switch_state(1)
-
-
-func _unit_process(_delta: float) -> void:
-	var move_vector: Vector2 = Vector2.ZERO
+func _calculate_move_vector() -> void:
+	move_vector = Vector2.ZERO
 	if Input.is_key_pressed(key_up):
 		move_vector += Vector2(0, -1)
 	if Input.is_key_pressed(key_down):
@@ -154,6 +151,15 @@ func _unit_process(_delta: float) -> void:
 	if Input.is_key_pressed(key_right):
 		move_vector += Vector2(1, 0)
 
+
+func _menu_process(_delta: float) -> void:
+	if key_action_just_pressed:
+		switch_state(-1)
+	if key_secondary_just_pressed:
+		switch_state(1)
+
+
+func _unit_process(_delta: float) -> void:
 	if move_vector != Vector2.ZERO:
 		unit_move.emit(move_vector)
 
@@ -165,16 +171,6 @@ func _unit_process(_delta: float) -> void:
 
 
 func _satellite_process(_delta: float) -> void:
-	var move_vector: Vector2 = Vector2.ZERO
-	if Input.is_key_pressed(key_up):
-		move_vector += Vector2(0, -1)
-	if Input.is_key_pressed(key_down):
-		move_vector += Vector2(0, 1)
-	if Input.is_key_pressed(key_left):
-		move_vector += Vector2(-1, 0)
-	if Input.is_key_pressed(key_right):
-		move_vector += Vector2(1, 0)
-
 	if move_vector != Vector2.ZERO:
 		satellite_move.emit(move_vector)
 
