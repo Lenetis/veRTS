@@ -22,8 +22,14 @@ const STUCK_SPEED_FRACTION: float = 0.125
 ## The unit cancels its current order after being stuck for this long
 const STUCK_TIME_TO_CANCEL_ORDER: float = 1
 
+## Autofiring units are waiting (AUTO_FIRE_DELAY * cooldown) longer to shoot
+const AUTO_FIRE_DELAY = 0.3333
+
 ## The owner of this unit
 @export var player: PlayerController
+
+## Buildings are immovable
+@export var movable: bool = true
 
 ## If true, the unit will start in game as selected
 @export var start_selected: bool = false
@@ -57,6 +63,11 @@ func _ready() -> void:
 	axis_lock_angular_x = true
 	axis_lock_angular_z = true
 
+	if not movable:
+		axis_lock_linear_x = true
+		axis_lock_linear_z = true
+		axis_lock_angular_y = true
+
 	range_area_shape.shape.radius = attack_range
 
 	current_cooldown = cooldown
@@ -89,6 +100,9 @@ func deactivate() -> void:
 
 
 func add_destination(destination: Vector2) -> void:
+	if not movable:
+		return
+
 	if destinations.size() > 0:
 		var last_destination: Vector2 = destinations[destinations.size() - 1]
 		if destination.distance_to(last_destination) < MIN_NEW_DESTINATION_DISTANCE:
@@ -98,6 +112,8 @@ func add_destination(destination: Vector2) -> void:
 
 
 func pop_destination() -> void:
+	if not movable:
+		return
 	destinations.pop_back()
 
 
@@ -141,6 +157,9 @@ func die() -> void:
 
 
 func on_move(direction: Vector2) -> void:
+	if not movable:
+		return
+
 	destinations.clear()
 	destinations.append(Vectors.to_vector2(position) + direction * speed * MANUAL_MOVE_TIME)
 
@@ -151,13 +170,14 @@ func on_action() -> void:
 
 func on_secondary() -> void:
 	print("Secondary!")
+	die()
 
 
 func _process(delta: float) -> void:
 	current_cooldown -= delta
 
 	if player.current_view != ViewMode.Mode.UNIT or not active:
-		if current_cooldown <= 0:
+		if current_cooldown <= -AUTO_FIRE_DELAY * cooldown:
 			try_shoot()
 
 
@@ -183,6 +203,9 @@ func _physics_process(delta: float) -> void:
 
 
 func move(_delta: float) -> void:
+	if not movable:
+		return
+
 	var next_destination: Vector2 = destinations[0]
 	var direction: Vector2 = (next_destination - Vectors.to_vector2(position)).normalized()
 
