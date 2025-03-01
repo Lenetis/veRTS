@@ -1,6 +1,6 @@
 class_name PlayerController
 
-extends Node
+extends Node3D
 
 ## Controls everything that has to do with the player - captures key inputs
 ## and performs all appropriate actions.
@@ -150,6 +150,8 @@ func _calculate_move_vector() -> void:
 		move_vector += Vector2(-1, 0)
 	if Input.is_key_pressed(key_right):
 		move_vector += Vector2(1, 0)
+
+	move_vector = move_vector.rotated(-rotation.y)
 
 
 func _menu_process(_delta: float) -> void:

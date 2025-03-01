@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bl3poscqf6l24"]
+[gd_scene load_steps=14 format=3 uid="uid://bl3poscqf6l24"]
 
 [ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_6hfpe"]
 [ext_resource type="Script" path="res://scripts/units/cannon.gd" id="2_jftvp"]
@@ -24,6 +24,12 @@ material = SubResource("StandardMaterial3D_gopso")
 top_radius = 50.0
 bottom_radius = 50.0
 height = 0.05
+
+[sub_resource type="BoxMesh" id="BoxMesh_bucfs"]
+size = Vector3(1, 1, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4pg0m"]
+size = Vector3(2, 1, 2)
 
 [node name="GameScene" type="Node3D"]
 
@@ -96,7 +102,7 @@ handle_input_locally = false
 size = Vector2i(574, 648)
 render_target_update_mode = 4
 
-[node name="PlayerController" type="Node" parent="GridContainer/SubViewportContainer/SubViewport"]
+[node name="PlayerController" type="Node3D" parent="GridContainer/SubViewportContainer/SubViewport"]
 script = ExtResource("1_6hfpe")
 key_up = 4194320
 key_down = 4194322
@@ -107,6 +113,7 @@ key_secondary = 4194440
 key_option = 4194441
 
 [node name="PlayerCamera" parent="GridContainer/SubViewportContainer/SubViewport/PlayerController" node_paths=PackedStringArray("player") instance=ExtResource("3_dwn4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.59893, 0)
 player = NodePath("..")
 
 [node name="SubViewportContainer2" type="SubViewportContainer" parent="GridContainer"]
@@ -120,7 +127,8 @@ handle_input_locally = false
 size = Vector2i(574, 648)
 render_target_update_mode = 4
 
-[node name="PlayerController2" type="Node" parent="GridContainer/SubViewportContainer2/SubViewport"]
+[node name="PlayerController2" type="Node3D" parent="GridContainer/SubViewportContainer2/SubViewport"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 script = ExtResource("1_6hfpe")
 key_up = 87
 key_down = 83
@@ -131,6 +139,7 @@ key_secondary = 88
 key_option = 67
 
 [node name="PlayerCamera" parent="GridContainer/SubViewportContainer2/SubViewport/PlayerController2" node_paths=PackedStringArray("player") instance=ExtResource("3_dwn4k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8363, 0)
 player = NodePath("..")
 
 [node name="Environment" type="Node" parent="."]
@@ -146,3 +155,10 @@ shadow_enabled = true
 [node name="DirectionalLight3D2" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(0.00991089, -0.951069, 0.308817, 0.499897, 0.272183, 0.822204, -0.866028, 0.146228, 0.478135, 0, 3.51522, 0)
 shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment"]
+mesh = SubResource("BoxMesh_bucfs")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, -4.30166)
+mesh = SubResource("BoxMesh_4pg0m")

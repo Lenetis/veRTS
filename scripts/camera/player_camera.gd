@@ -2,6 +2,8 @@ class_name PlayerCamera
 
 extends Camera3D
 
+## NEEDS TO BE A CHILD OF PLAYER CONTROLLER
+
 @onready var raycast = $RayCast3D
 
 @export var player: PlayerController
@@ -17,7 +19,7 @@ extends Camera3D
 @export var satellite_min_height: float = 20
 
 @export_category("Unit")
-@export var unit_position_offset: Vector3 = Vector3(0, 5, 0)
+@export var unit_position_offset: Vector3 = Vector3(0, 10, 16)
 @export var unit_rotation: Vector3 = Vector3(-30, 0, 0)
 @export var unit_lerp_weight: float = 5
 
@@ -55,6 +57,8 @@ func change_view(view_mode: ViewMode.Mode) -> void:
 
 func on_move(direction: Vector2) -> void:
 	move_vector = Vectors.to_vector3(direction.normalized())
+	# spaghetti, cancelling the rotation that the parent has made
+	move_vector = move_vector.rotated(Vector3.UP, -get_parent().rotation.y)
 
 
 func on_zoom() -> void:
@@ -108,6 +112,13 @@ func _process(delta: float) -> void:
 func _unit_process(delta: float) -> void:
 	position = position.lerp(target_position + unit_position_offset, unit_lerp_weight * delta)
 	rotation_degrees = rotation_degrees.lerp(target_rotation, unit_lerp_weight * delta)
+
+	if player.active_units.size() > 0:
+		var center_position: Vector3 = Vector3.ZERO
+		for unit in player.active_units:
+			center_position += unit.position
+		center_position /= player.active_units.size()
+		target_position = get_parent().to_local(center_position)
 
 
 func _satellite_process(delta: float) -> void:
