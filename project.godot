@@ -21,4 +21,4 @@ enabled=PackedStringArray("res://addons/format_on_save/plugin.cfg")
 
 [global_group]
 
-ground=""
+ground="ground objects can be shot at from orbit"

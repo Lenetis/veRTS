@@ -62,11 +62,12 @@ radius = 10.0
 [node name="BaseUnit" parent="." node_paths=PackedStringArray("player") instance=ExtResource("1_m3rv1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.98139, 0, -11.12)
 player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
+start_selected = true
+turn_in_place = false
 
 [node name="BaseUnit3" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_2lr8e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.027, 0, -11.99)
 player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
-movable = false
 start_selected = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BaseUnit3"]
@@ -93,6 +94,8 @@ mesh = SubResource("BoxMesh_nsn6b")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.396983, 0, -8.62146)
 player = NodePath("../GridContainer/SubViewportContainer2/SubViewport/PlayerController2")
 start_selected = true
+hp = 10000.0
+turn_in_place = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BaseUnit2"]
 shape = SubResource("CylinderShape3D_8m78n")
@@ -210,7 +213,7 @@ script = ExtResource("6_2x8eb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.926674, 0)
 mesh = SubResource("CylinderMesh_5nta1")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CaptureZone"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CaptureZone" groups=["ground"]]
 shape = SubResource("CylinderShape3D_xjs1e")
 
 [node name="Factory" parent="." node_paths=PackedStringArray("player") instance=ExtResource("6_utebu")]

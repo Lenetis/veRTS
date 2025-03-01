@@ -38,8 +38,11 @@ const AUTO_FIRE_DELAY = 0.3333
 @export var cooldown: float = 2
 @export var attack_range: float = 15
 @export var speed: float = 2
-@export var turn_speed: float = 2
+@export var turn_speed: float = 90
 @export var turn_in_place: bool = true
+## Used if turn_in_place is true. If the angle towards the target is greater than this angle,
+## the unit will stay in place and just turn. Otherwise it will both move and turn.
+@export var max_move_angle: float = 91
 
 # the unit needs to wait this time before being able to shoot again
 var current_cooldown: float
@@ -198,7 +201,6 @@ func _physics_process(delta: float) -> void:
 
 		move(delta)
 
-		look_at(position + linear_velocity)
 	else:
 		stuck_time = 0
 		linear_velocity = Vector3.ZERO
@@ -206,16 +208,48 @@ func _physics_process(delta: float) -> void:
 	angular_velocity = Vector3.ZERO
 
 
-func move(_delta: float) -> void:
+func move(delta: float) -> void:
 	if not movable:
 		return
 
 	var next_destination: Vector2 = destinations[0]
 	var direction: Vector2 = (next_destination - Vectors.to_vector2(position)).normalized()
 
-	# position += Vectors.to_vector3(direction) * speed * delta  # phases through other units
-	# move_and_collide(Vectors.to_vector3(direction) * speed * delta)  # stops when touching units
-	linear_velocity = Vectors.to_vector3(direction) * speed
+	if turn_in_place:
+		# position += Vectors.to_vector3(direction) * speed * delta  # phases through other units
+		# move_and_collide(Vectors.to_vector3(direction) * speed * delta)  # stops when touching units
+		linear_velocity = Vectors.to_vector3(direction) * speed
+		look_at(position + linear_velocity)
+	else:
+		# https://math.stackexchange.com/questions/110080/shortest-way-to-achieve-target-angle
+		# I have no idea how it works
+		# once again defeated by basic trigonometry
+		var target_rotation: float = rad_to_deg(atan2(direction.x, direction.y)) + 180
+		var alpha = target_rotation - rotation_degrees.y
+		var beta = target_rotation - rotation_degrees.y + 360
+		var gamma = target_rotation - rotation_degrees.y - 360
+		var a_alpha = abs(alpha)
+		var a_beta = abs(beta)
+		var a_gamma = abs(gamma)
+		var min_value = [a_alpha, a_beta, a_gamma].min()
+		var turn_right: bool
+		if min_value == a_alpha and alpha > 0:
+			turn_right = true
+		elif min_value == a_beta and beta > 0:
+			turn_right = true
+		elif min_value == a_gamma and gamma > 0:
+			turn_right = true
+		else:
+			turn_right = false
+
+		if min_value > 0.1:
+			if turn_right:
+				rotation_degrees.y += turn_speed * delta
+			else:
+				rotation_degrees.y -= turn_speed * delta
+
+		if min_value < max_move_angle:
+			translate_object_local(Vector3.FORWARD * speed * delta)
 
 	var squared_distance_to_destination: float = position.distance_squared_to(
 		Vectors.to_vector3(next_destination)

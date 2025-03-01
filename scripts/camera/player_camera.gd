@@ -9,8 +9,14 @@ extends Camera3D
 
 @export var player: PlayerController
 
+@export_category("Orbital Shooting")
 @export var projectile_small: PackedScene
+@export var cooldown_small: float = 0.25
 @export var projectile_big: PackedScene
+@export var cooldown_big: float = 10
+
+var current_cooldown_small: float = 0
+var current_cooldown_big: float = 0
 
 @export_category("Satellite")
 @export var satellite_position_offset: Vector3 = Vector3(0, 30, 0)
@@ -74,13 +80,15 @@ func try_build(building: PackedScene) -> void:
 		print("Cannot build")
 
 
-func try_shoot(projectile: PackedScene) -> void:
+func try_shoot(projectile: PackedScene) -> bool:
 	var collider: Area3D = base_raycast.get_collider()
 	if collider != null and collider.is_in_group("ground"):
 		var new_projectile: BaseProjectile = projectile.instantiate()
 		new_projectile.position = base_raycast.get_collision_point()
 		new_projectile.position.y = 0
 		get_tree().get_root().add_child(new_projectile)
+		return true
+	return false
 
 
 func on_move(direction: Vector2) -> void:
@@ -122,11 +130,15 @@ func on_cancel_order() -> void:
 
 
 func on_weapon() -> void:
-	try_shoot(projectile_small)
+	if current_cooldown_small >= cooldown_small:
+		if try_shoot(projectile_small):
+			current_cooldown_small = 0
 
 
 func on_weapon2() -> void:
-	try_shoot(projectile_big)
+	if current_cooldown_big >= cooldown_big:
+		if try_shoot(projectile_big):
+			current_cooldown_big = 0
 
 
 func on_build() -> void:
@@ -143,6 +155,9 @@ func _process(delta: float) -> void:
 			_unit_process(delta)
 		ViewMode.Mode.SATELLITE:
 			_satellite_process(delta)
+
+	current_cooldown_small += delta
+	current_cooldown_big += delta
 
 
 func _unit_process(delta: float) -> void:
