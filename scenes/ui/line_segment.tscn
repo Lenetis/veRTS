@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://dua8a0osjmk8k"]
+[gd_scene load_steps=4 format=3 uid="uid://dua8a0osjmk8k"]
 
 [ext_resource type="Script" path="res://scripts/ui/3d/line_segment.gd" id="1_n0dug"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_04hmp"]
+albedo_color = Color(0, 0.992434, 0.165122, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_5u8gg"]
+material = SubResource("StandardMaterial3D_04hmp")
 
 [node name="LineSegment" type="MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(0.2, 0, 0, 0, 0.3, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_5u8gg")
 script = ExtResource("1_n0dug")

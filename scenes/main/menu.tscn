@@ -184,7 +184,7 @@ grow_vertical = 2
 theme_override_font_sizes/bold_font_size = 20
 bbcode_enabled = true
 text = "[center][color=black][b]PRESS ONE BUTTON.
-DO NOT PRESS THE REST.[/b][/color][/center]"
+LEAVE THE REST.[/b][/color][/center]"
 
 [node name="VictoryText" type="RichTextLabel" parent="."]
 custom_minimum_size = Vector2(500, 80)
@@ -203,7 +203,7 @@ grow_vertical = 2
 theme_override_font_sizes/bold_font_size = 20
 bbcode_enabled = true
 text = "[center][b]PRESS ONE BUTTON.
-DO NOT PRESS THE REST.[/b][/center]"
+LEAVE THE REST.[/b][/center]"
 
 [node name="Shadow2" type="RichTextLabel" parent="."]
 custom_minimum_size = Vector2(500, 200)

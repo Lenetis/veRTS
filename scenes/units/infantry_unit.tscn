@@ -14,7 +14,7 @@
 size = Vector3(1, 0.415, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_nsn6b"]
-size = Vector3(0.1, 0.1, 2)
+size = Vector3(0.1, 0.1, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_skk7k"]
 resource_local_to_scene = true
@@ -47,11 +47,12 @@ script = ExtResource("2_221oq")
 projectile = ExtResource("3_pquye")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cannon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0557318, 0)
 mesh = SubResource("BoxMesh_tvbdu")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cannon/MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.20277)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.934069)
 mesh = SubResource("BoxMesh_nsn6b")
 
 [node name="SelectionMarker" type="MeshInstance3D" parent="." groups=["colorable"]]
