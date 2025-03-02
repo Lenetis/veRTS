@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bl3poscqf6l24"]
+[gd_scene load_steps=32 format=3 uid="uid://bl3poscqf6l24"]
 
 [ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_6hfpe"]
 [ext_resource type="PackedScene" uid="uid://5voogggaqiqc" path="res://scenes/units/base_unit_instantiable.tscn" id="1_m3rv1"]
@@ -8,7 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://bmkkq4ysahu5o" path="res://scenes/units/base_unit.tscn" id="4_2lr8e"]
 [ext_resource type="Script" path="res://scripts/capture_zone/capture_zone.gd" id="6_2x8eb"]
 [ext_resource type="Script" path="res://scripts/units/building.gd" id="6_kkxa7"]
+[ext_resource type="Script" path="res://scripts/ui/2d/player_ui.gd" id="8_3kdqe"]
+[ext_resource type="Script" path="res://scripts/ui/2d/resource_ui.gd" id="9_1if3l"]
 [ext_resource type="Script" path="res://scripts/player/player_base.gd" id="9_1kjy7"]
+[ext_resource type="Script" path="res://scripts/ui/2d/center_ui.gd" id="10_o62n2"]
+[ext_resource type="Texture2D" uid="uid://dkm1moy2h16pw" path="res://crosshair.png" id="11_5nuse"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_yhh65"]
 
@@ -182,6 +186,56 @@ key_option = 4194441
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.59893, 0)
 player = NodePath("..")
 
+[node name="PlayerUI" type="RichTextLabel" parent="GridContainer/SubViewportContainer/SubViewport" node_paths=PackedStringArray("player")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[center]placeholder text[/center]"
+script = ExtResource("8_3kdqe")
+player = NodePath("../PlayerController")
+active_color = Color(1, 1, 1, 1)
+inactive_color = Color(1, 1, 1, 0.376471)
+selected_color = Color(0.364554, 0.872024, 1, 1)
+
+[node name="ResourceUI" type="RichTextLabel" parent="GridContainer/SubViewportContainer/SubViewport" node_paths=PackedStringArray("player")]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+bbcode_enabled = true
+text = "999
+(+100)"
+script = ExtResource("9_1if3l")
+player = NodePath("../PlayerController")
+
+[node name="CenterContainer" type="CenterContainer" parent="GridContainer/SubViewportContainer/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="GridContainer/SubViewportContainer/SubViewport/CenterContainer"]
+modulate = Color(1, 1, 1, 0.501961)
+self_modulate = Color(1, 1, 1, 0.501961)
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+
+[node name="Crosshair" type="TextureRect" parent="GridContainer/SubViewportContainer/SubViewport/CenterContainer/BoxContainer" node_paths=PackedStringArray("player")]
+layout_mode = 2
+texture = ExtResource("11_5nuse")
+script = ExtResource("10_o62n2")
+player = NodePath("../../../PlayerController")
+
 [node name="SubViewportContainer2" type="SubViewportContainer" parent="GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -210,6 +264,56 @@ key_option = 67
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8363, 0)
 cull_mask = 1047553
 player = NodePath("..")
+
+[node name="PlayerUI" type="RichTextLabel" parent="GridContainer/SubViewportContainer2/SubViewport" node_paths=PackedStringArray("player")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[center]placeholder text[/center]"
+script = ExtResource("8_3kdqe")
+player = NodePath("../PlayerController2")
+active_color = Color(1, 1, 1, 1)
+inactive_color = Color(1, 1, 1, 0.376471)
+selected_color = Color(0.364554, 0.872024, 1, 1)
+
+[node name="ResourceUI" type="RichTextLabel" parent="GridContainer/SubViewportContainer2/SubViewport" node_paths=PackedStringArray("player")]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+bbcode_enabled = true
+text = "999
+(+100)"
+script = ExtResource("9_1if3l")
+player = NodePath("../PlayerController2")
+
+[node name="CenterContainer" type="CenterContainer" parent="GridContainer/SubViewportContainer2/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="GridContainer/SubViewportContainer2/SubViewport/CenterContainer"]
+modulate = Color(1, 1, 1, 0.501961)
+self_modulate = Color(1, 1, 1, 0.501961)
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+
+[node name="Crosshair" type="TextureRect" parent="GridContainer/SubViewportContainer2/SubViewport/CenterContainer/BoxContainer" node_paths=PackedStringArray("player")]
+layout_mode = 2
+texture = ExtResource("11_5nuse")
+script = ExtResource("10_o62n2")
+player = NodePath("../../../PlayerController2")
 
 [node name="Environment" type="Node" parent="."]
 
