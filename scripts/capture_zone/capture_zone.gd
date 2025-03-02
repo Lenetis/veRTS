@@ -102,7 +102,6 @@ func _process(delta):
 
 	if current_capture_time != 0:
 		update_indicators()
-		print(current_capture_time)
 
 	if current_capture_time >= time_to_capture:
 		print("VICTORY!!! ", capturing_player)

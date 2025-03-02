@@ -32,7 +32,7 @@ var state_secondary_dict: Dictionary = {
 @export var color: Color
 
 @export var money: float = 750
-@export var base_income: float = 10
+@export var base_income: float = 15
 
 ## Visibility ID of the player, used to determine camera and object layers.
 ## Should be different in each player.

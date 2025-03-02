@@ -1,13 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://bl3poscqf6l24"]
+[gd_scene load_steps=10 format=3 uid="uid://bl3poscqf6l24"]
 
-[ext_resource type="PackedScene" uid="uid://5voogggaqiqc" path="res://scenes/units/base_unit_instantiable.tscn" id="1_m3rv1"]
 [ext_resource type="PackedScene" uid="uid://bnhfotdadapx" path="res://scenes/capture_zone/capture_zone.tscn" id="3_ma4q5"]
 [ext_resource type="PackedScene" uid="uid://cvrmwvmqtbyf4" path="res://scenes/player/player_base.tscn" id="4_ea2em"]
 [ext_resource type="Script" path="res://scripts/ui/2d/load_scene_button.gd" id="5_2a0d8"]
 [ext_resource type="PackedScene" uid="uid://tf5g7xb4ypp5" path="res://scenes/player/player_controller_full.tscn" id="5_xg7cn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gopso"]
-albedo_color = Color(0.446777, 0.446777, 0.446777, 1)
+albedo_color = Color(0.356854, 0.469866, 0.493693, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_f8yox"]
 material = SubResource("StandardMaterial3D_gopso")
@@ -27,18 +26,6 @@ size = Vector3(2, 1, 2)
 
 [node name="GameScene" type="Node3D"]
 process_mode = 1
-
-[node name="BaseUnit" parent="." node_paths=PackedStringArray("player") instance=ExtResource("1_m3rv1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.87735, 0, -11.5217)
-player = NodePath("../GridContainer/SubViewportContainer2/SubViewport/PlayerController2")
-start_selected = true
-turn_in_place = false
-
-[node name="BaseUnit2" parent="." node_paths=PackedStringArray("player") instance=ExtResource("1_m3rv1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.26988, 0, 8.17953)
-player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
-start_selected = true
-turn_in_place = false
 
 [node name="GridContainer" type="GridContainer" parent="."]
 anchors_preset = 15
@@ -64,6 +51,7 @@ render_target_update_mode = 4
 [node name="PlayerController" parent="GridContainer/SubViewportContainer/SubViewport" instance=ExtResource("5_xg7cn")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 color = Color(0.985617, 0.242541, 0.190315, 1)
+money = 500.0
 key_up = 87
 key_down = 83
 key_left = 65
@@ -85,6 +73,7 @@ render_target_update_mode = 4
 
 [node name="PlayerController2" parent="GridContainer/SubViewportContainer2/SubViewport" instance=ExtResource("5_xg7cn")]
 color = Color(0.162026, 0.398144, 1, 1)
+money = 500.0
 visibility_id = 1
 
 [node name="Environment" type="Node" parent="."]
@@ -107,21 +96,39 @@ transform = Transform3D(0.00991089, -0.951069, 0.308817, 0.499897, 0.272183, 0.8
 shadow_enabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Environment"]
+visible = false
 mesh = SubResource("BoxMesh_bucfs")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Environment"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, -4.30166)
+visible = false
 mesh = SubResource("BoxMesh_4pg0m")
 
 [node name="CaptureZone" parent="." instance=ExtResource("3_ma4q5")]
-time_to_capture = 1.0
+time_to_capture = 45.0
+
+[node name="CaptureZone2" parent="." instance=ExtResource("3_ma4q5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 0)
+time_to_capture = 45.0
+
+[node name="CaptureZone3" parent="." instance=ExtResource("3_ma4q5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 0)
+time_to_capture = 45.0
+
+[node name="CaptureZone4" parent="." instance=ExtResource("3_ma4q5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 0)
+time_to_capture = 45.0
+
+[node name="CaptureZone5" parent="." instance=ExtResource("3_ma4q5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 0)
+time_to_capture = 45.0
 
 [node name="PlayerBase" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_ea2em")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.8848, 0, -1.83127)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
 player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
 
 [node name="PlayerBase2" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_ea2em")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.272, 9.53676e-07, -4.48261)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
 player = NodePath("../GridContainer/SubViewportContainer2/SubViewport/PlayerController2")
 
 [node name="Victory" type="Control" parent="."]

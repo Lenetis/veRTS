@@ -14,8 +14,7 @@ height = 1.0
 [node name="TankProjectile" type="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.61585, 0)
 script = ExtResource("1_lhh3u")
-speed = 12.5
-damage = 50.0
+damage = 100.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)

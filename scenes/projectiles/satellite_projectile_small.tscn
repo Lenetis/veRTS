@@ -3,12 +3,16 @@
 [ext_resource type="Script" path="res://scripts/projectiles/base_projectile.gd" id="1_y5fix"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_g2b0c"]
+radius = 1.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_k6oxs"]
+radius = 1.0
+height = 2.0
 
 [node name="BaseProjectile" type="Area3D"]
 script = ExtResource("1_y5fix")
 speed = 0.0
+damage = 20.0
 lifetime = 0.1
 die_on_hit = false
 

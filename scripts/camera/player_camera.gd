@@ -6,14 +6,17 @@ extends Camera3D
 
 @onready var raycast = $RayCast3D
 @onready var base_raycast = $RayCast3DBase
+@onready var crosshair = $"../CenterContainer/BoxContainer/Crosshair"  # I'm sorry
 
 @export var player: PlayerController
 
 @export_category("Orbital Shooting")
 @export var projectile_small: PackedScene
-@export var cooldown_small: float = 0.25
+@export var cooldown_small: float = 0.333
 @export var projectile_big: PackedScene
-@export var cooldown_big: float = 10
+@export var cooldown_big: float = 30
+@export var shot_ready_color: Color = Color.RED
+@export var shot_not_ready_color: Color = Color.WHITE
 
 var current_cooldown_small: float = 0
 var current_cooldown_big: float = 0
@@ -186,6 +189,11 @@ func _process(delta: float) -> void:
 
 	current_cooldown_small += delta
 	current_cooldown_big += delta
+
+	if current_cooldown_big >= cooldown_big:
+		crosshair.modulate = shot_ready_color
+	else:
+		crosshair.modulate = shot_not_ready_color
 
 
 func _unit_process(delta: float) -> void:
