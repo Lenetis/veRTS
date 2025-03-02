@@ -226,6 +226,8 @@ func take_damage(damage: float) -> void:
 
 
 func die() -> void:
+	while destinations.size() > 0:
+		pop_back_destination()
 	self.deactivate()
 	queue_free()
 

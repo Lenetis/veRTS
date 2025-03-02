@@ -26,8 +26,7 @@ ring_segments = 16
 [node name="TankUnit" type="RigidBody3D"]
 mass = 5.0
 script = ExtResource("1_bg5hi")
-hp = 250.0
-cooldown = 1.0
+hp = 750.0
 
 [node name="RangeArea3D" type="Area3D" parent="."]
 collision_layer = 0
@@ -47,6 +46,7 @@ mesh = SubResource("BoxMesh_ht8tn")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.715633, 0)
 script = ExtResource("2_nmdkn")
 projectile = ExtResource("3_2hxly")
+look_back_lerp_weight = 1.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cannon"]
 mesh = SubResource("BoxMesh_tvbdu")
