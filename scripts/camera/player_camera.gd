@@ -133,12 +133,12 @@ func on_deselect() -> void:
 
 func on_order() -> void:
 	for unit in player.active_units:
-		unit.add_destination(Vectors.to_vector2(target_position))
+		unit.add_destination(Vectors.to_vector2(get_parent().to_global(target_position)))
 
 
 func on_cancel_order() -> void:
 	for unit in player.active_units:
-		unit.pop_destination()
+		unit.pop_front_destination()
 
 
 func on_weapon() -> void:

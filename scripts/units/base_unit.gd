@@ -32,6 +32,7 @@ const AUTO_FIRE_DELAY = 0.3333
 
 ## If true, the unit will start in game as selected
 @export var start_selected: bool = false
+@export var selectable: bool = true
 
 @export_category("Stats")
 @export var hp: float = 100
@@ -84,7 +85,7 @@ func _ready() -> void:
 
 
 func activate() -> void:
-	if active:
+	if active or not selectable:
 		return
 	active = true
 	player.unit_move.connect(on_move)
@@ -117,10 +118,22 @@ func add_destination(destination: Vector2) -> void:
 	destinations.append(destination)
 
 
-func pop_destination() -> void:
+func pop_back_destination() -> void:
 	if not movable:
 		return
 	destinations.pop_back()
+	print("poped dest ba")
+
+
+func pop_front_destination() -> void:
+	destinations.pop_front()
+	print("poped dest fr")
+
+
+func clear_destinations() -> void:
+	destinations.clear()
+
+	print("cleard dest")
 
 
 func get_enemies_in_range() -> Array[BaseUnit]:
@@ -167,8 +180,8 @@ func on_move(direction: Vector2) -> void:
 	if not movable:
 		return
 
-	destinations.clear()
-	destinations.append(Vectors.to_vector2(position) + direction * speed * MANUAL_MOVE_TIME)
+	clear_destinations()
+	add_destination(Vectors.to_vector2(position) + direction * speed * MANUAL_MOVE_TIME)
 
 
 func on_action() -> void:
@@ -196,7 +209,8 @@ func _physics_process(delta: float) -> void:
 			stuck_time = 0
 		if stuck_time > STUCK_TIME_TO_CANCEL_ORDER:
 			stuck_time = 0
-			destinations.pop_front()
+			pop_front_destination()
+			print("stuck")
 			return
 
 		move(delta)
@@ -249,10 +263,11 @@ func move(delta: float) -> void:
 				rotation_degrees.y -= turn_speed * delta
 
 		if min_value < max_move_angle:
-			translate_object_local(Vector3.FORWARD * speed * delta)
+			linear_velocity = -get_global_transform().basis.z * speed
+			# translate_object_local(Vector3.FORWARD * speed * delta)
 
 	var squared_distance_to_destination: float = position.distance_squared_to(
 		Vectors.to_vector3(next_destination)
 	)
 	if squared_distance_to_destination <= MIN_NEW_DESTINATION_DISTANCE ** 2:
-		destinations.pop_front()
+		pop_front_destination()
