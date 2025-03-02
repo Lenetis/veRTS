@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bl3poscqf6l24"]
+[gd_scene load_steps=28 format=3 uid="uid://bl3poscqf6l24"]
 
 [ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_6hfpe"]
 [ext_resource type="PackedScene" uid="uid://5voogggaqiqc" path="res://scenes/units/base_unit_instantiable.tscn" id="1_m3rv1"]
@@ -19,6 +19,11 @@ size = Vector3(1, 0.415, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_nsn6b"]
 size = Vector3(0.1, 0.1, 2)
+
+[sub_resource type="TorusMesh" id="TorusMesh_6x3jw"]
+inner_radius = 0.872
+outer_radius = 1.228
+ring_segments = 16
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_8m78n"]
 
@@ -72,6 +77,8 @@ cap_bottom = false
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_5ybau"]
 radius = 10.0
 
+[sub_resource type="PrismMesh" id="PrismMesh_ct5qe"]
+
 [node name="GameScene" type="Node3D"]
 
 [node name="BaseUnit" parent="." node_paths=PackedStringArray("player") instance=ExtResource("1_m3rv1")]
@@ -105,6 +112,10 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.20277)
 mesh = SubResource("BoxMesh_nsn6b")
 
+[node name="SelectionMarker" type="MeshInstance3D" parent="BaseUnit3"]
+transform = Transform3D(1, 0, 0, 0, 0.01, 0, 0, 0, 1, 0, 0.630355, 0)
+mesh = SubResource("TorusMesh_6x3jw")
+
 [node name="BaseUnit2" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_2lr8e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.396983, 0, -8.62146)
 player = NodePath("../GridContainer/SubViewportContainer2/SubViewport/PlayerController2")
@@ -130,6 +141,10 @@ skeleton = NodePath("../..")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BaseUnit2/Cannon/MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.20277)
 mesh = SubResource("BoxMesh_nsn6b")
+
+[node name="SelectionMarker" type="MeshInstance3D" parent="BaseUnit2"]
+transform = Transform3D(1, 0, 0, 0, 0.01, 0, 0, 0, 1, 0, 0.630355, 0)
+mesh = SubResource("TorusMesh_6x3jw")
 
 [node name="GridContainer" type="GridContainer" parent="."]
 anchors_preset = 15
@@ -179,9 +194,10 @@ size = Vector2i(574, 648)
 render_target_update_mode = 4
 
 [node name="PlayerController2" type="Node3D" parent="GridContainer/SubViewportContainer2/SubViewport"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 script = ExtResource("1_6hfpe")
 buildings = Array[PackedScene]([ExtResource("1_m3rv1"), SubResource("PackedScene_gxo7m")])
+visibility_id = 1
 key_up = 87
 key_down = 83
 key_left = 65
@@ -192,6 +208,7 @@ key_option = 67
 
 [node name="PlayerCamera" parent="GridContainer/SubViewportContainer2/SubViewport/PlayerController2" node_paths=PackedStringArray("player") instance=ExtResource("3_dwn4k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.8363, 0)
+cull_mask = 1047553
 player = NodePath("..")
 
 [node name="Environment" type="Node" parent="."]
@@ -242,3 +259,8 @@ mesh = SubResource("CylinderMesh_hwf4d")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerBase"]
 shape = SubResource("CylinderShape3D_5ybau")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.076375, 1.21294, -3.93654)
+layers = 4
+mesh = SubResource("PrismMesh_ct5qe")

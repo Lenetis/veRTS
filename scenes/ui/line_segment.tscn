@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dua8a0osjmk8k"]
+
+[ext_resource type="Script" path="res://scripts/ui/3d/line_segment.gd" id="1_n0dug"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5u8gg"]
+
+[node name="LineSegment" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_5u8gg")
+script = ExtResource("1_n0dug")

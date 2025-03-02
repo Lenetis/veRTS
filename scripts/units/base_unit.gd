@@ -4,9 +4,12 @@ extends RigidBody3D
 
 ## WARNING, UNIT NEEDS A CANNON AS ITS DIRECT CHILD IF IT IS SUPPOSED TO SHOOT
 
+const LINE_SEGMENT = preload("res://scenes/ui/line_segment.tscn")
+
 @onready var range_area = $RangeArea3D
 @onready var range_area_shape = $RangeArea3D/CollisionShape3D
 var cannon: Cannon
+var selection_marker: VisualInstance3D
 
 ## When a new destination is added, that is closer
 ## to the last destination than this value, it will be skipped
@@ -54,6 +57,9 @@ var current_hp: float
 # array of global positions where the unit wants to go
 var destinations: Array[Vector2]
 
+# line segments leading between destinations
+var line_segments: Array[LineSegment]
+
 # whether the unit listens and reacts to the owner signals
 var active: bool = false
 
@@ -68,6 +74,11 @@ func _ready() -> void:
 
 	if has_node("Cannon"):
 		cannon = $Cannon
+
+	if has_node("SelectionMarker"):
+		selection_marker = $SelectionMarker
+		for i in range(1, 10):
+			selection_marker.set_layer_mask_value(i, false)
 
 	if not movable:
 		axis_lock_linear_x = true
@@ -94,6 +105,8 @@ func activate() -> void:
 
 	player.add_active_unit(self)
 
+	selection_marker.set_layer_mask_value(player.get_normal_visibility_layer(), true)
+
 
 func deactivate() -> void:
 	if not active:
@@ -104,6 +117,8 @@ func deactivate() -> void:
 	player.unit_secondary.disconnect(on_secondary)
 
 	player.remove_active_unit(self)
+
+	selection_marker.set_layer_mask_value(player.get_normal_visibility_layer(), false)
 
 
 func add_destination(destination: Vector2) -> void:
@@ -117,23 +132,54 @@ func add_destination(destination: Vector2) -> void:
 
 	destinations.append(destination)
 
+	var new_segment: LineSegment = LINE_SEGMENT.instantiate()
+	for i in range(1, 10):
+		new_segment.set_layer_mask_value(i, false)
+	new_segment.set_layer_mask_value(player.get_satellite_visibility_layer(), true)
+
+	new_segment.to = Vectors.to_vector3(destinations[destinations.size() - 1])
+	if destinations.size() == 1:
+		new_segment.from = global_position
+	else:
+		new_segment.from = Vectors.to_vector3(destinations[destinations.size() - 2])
+	get_tree().get_root().add_child(new_segment)
+	line_segments.append(new_segment)
+	print(new_segment.from, "  ", new_segment.to)
+
 
 func pop_back_destination() -> void:
 	if not movable:
 		return
+	if destinations.size() == 0:
+		return
 	destinations.pop_back()
+	var segment: LineSegment = line_segments.pop_back()
+	segment.queue_free()
 	print("poped dest ba")
 
 
 func pop_front_destination() -> void:
+	if destinations.size() == 0:
+		return
 	destinations.pop_front()
+	var segment: LineSegment = line_segments.pop_front()
+	segment.queue_free()
 	print("poped dest fr")
 
 
 func clear_destinations() -> void:
 	destinations.clear()
 
+	for segment: LineSegment in line_segments:
+		segment.queue_free()
+	line_segments.clear()
+
 	print("cleard dest")
+
+
+func update_first_line_segment() -> void:
+	if line_segments.size() > 0:
+		line_segments[0].from = global_position
 
 
 func get_enemies_in_range() -> Array[BaseUnit]:
@@ -214,6 +260,7 @@ func _physics_process(delta: float) -> void:
 			return
 
 		move(delta)
+		update_first_line_segment()
 
 	else:
 		stuck_time = 0

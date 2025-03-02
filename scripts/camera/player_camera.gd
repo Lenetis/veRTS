@@ -58,6 +58,20 @@ func _ready() -> void:
 	player.satellite_build.connect(on_build)
 	player.satellite_build2.connect(on_build2)
 
+	for i in range(1, 10):
+		set_cull_mask_value(i, false)
+
+	set_cull_mask_value(1, true)  # objects that are always visible
+	set_cull_mask_value(player.get_normal_visibility_layer(), true)  # player world UI (selection markers etc)
+	update_cull_mask()
+
+
+func update_cull_mask() -> void:
+	if player.current_view == ViewMode.Mode.SATELLITE:
+		set_cull_mask_value(player.get_satellite_visibility_layer(), true)
+	else:
+		set_cull_mask_value(player.get_satellite_visibility_layer(), false)
+
 
 func change_view(view_mode: ViewMode.Mode) -> void:
 	print("Camera change")
@@ -65,6 +79,8 @@ func change_view(view_mode: ViewMode.Mode) -> void:
 		target_rotation = satellite_rotation
 	else:
 		target_rotation = unit_rotation
+
+	update_cull_mask()
 
 
 func try_build(building: PackedScene) -> void:
@@ -138,7 +154,7 @@ func on_order() -> void:
 
 func on_cancel_order() -> void:
 	for unit in player.active_units:
-		unit.pop_front_destination()
+		unit.pop_back_destination()
 
 
 func on_weapon() -> void:

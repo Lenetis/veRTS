@@ -32,6 +32,12 @@ var state_secondary_dict: Dictionary = {
 @export var money: float = 750
 @export var base_income: float = 10
 
+## Visibility ID of the player, used to determine camera and object layers.
+## Should be different in each player.
+## IDs: 1 - always visible, 2 - player0, always visible, 3 - player0, satellite visible
+## 		4 - player1, always visible, 5 - player1, satellite visible
+@export var visibility_id: int
+
 # Keys responsible for movement
 @export var key_up: Key
 @export var key_down: Key
@@ -98,6 +104,14 @@ func pay_money(amount: float) -> bool:
 		money -= amount
 		return true
 	return false
+
+
+func get_normal_visibility_layer() -> int:
+	return (visibility_id + 1) * 2
+
+
+func get_satellite_visibility_layer() -> int:
+	return get_normal_visibility_layer() + 1
 
 
 ## Toggles between unit and satellite view mode
