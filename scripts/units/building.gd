@@ -22,7 +22,7 @@ func _spawn_unit() -> void:
 
 	new_unit.transform = global_transform
 	new_unit.position += spawn_offset
-	get_tree().get_root().add_child(new_unit)
+	get_tree().get_root().get_children()[0].add_child(new_unit)
 
 
 func _process(delta: float) -> void:

@@ -94,7 +94,7 @@ func try_build(building: PackedScene) -> void:
 			return
 		new_building.player = player
 		new_building.position = build_position
-		get_tree().get_root().add_child(new_building)
+		get_tree().get_root().get_children()[0].add_child(new_building)
 	else:
 		print("Cannot build")
 
@@ -114,7 +114,7 @@ func try_shoot(projectile: PackedScene) -> bool:
 		new_projectile.position = base_raycast.get_collision_point()
 		new_projectile.position.y = 0
 		new_projectile.player = player
-		get_tree().get_root().add_child(new_projectile)
+		get_tree().get_root().get_children()[0].add_child(new_projectile)
 		return true
 	return false
 

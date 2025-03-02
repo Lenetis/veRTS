@@ -16,6 +16,8 @@ var units: Dictionary = {}
 var capture_indicators: Array[MeshInstance3D] = []
 var last_update_time: float = 0
 
+var over: bool = false
+
 
 func update_indicators() -> void:
 	if abs(last_update_time - current_capture_time) < 0.25:
@@ -39,22 +41,38 @@ func update_indicators() -> void:
 		material.albedo_color = capturing_player.color
 		new_indicator.mesh.material = material
 
-		get_tree().get_root().add_child(new_indicator)
+		get_tree().get_root().get_children()[0].add_child(new_indicator)
 
 		capture_indicators.append(new_indicator)
 
 
 func win():
-	var new_indicator: MeshInstance3D = CAPTURE_INDICATOR.instantiate()
+	over = true
 
-	new_indicator.mesh = new_indicator.mesh.duplicate()  # make mesh unique, so it doesn't copy material
-	var material = StandardMaterial3D.new()
-	material.albedo_color = capturing_player.color
-	new_indicator.mesh.material = material
+	var root_node = get_tree().get_root() as Node
+	var all_nodes = NodeUtilities.get_all_children(root_node)
+	for node in all_nodes:
+		if node.name == "Victory":
+			print("victory")
+			node.visible = true
+		if node.name == "VictoryText":
+			print("text")
+			node.text = (
+				"[center][color="
+				+ capturing_player.color.to_html(true)
+				+ "][b]ONE TOOK,\n"
+				+ "THE REST LEFT[/b][/color][/center]"
+			)
+	#var new_indicator: MeshInstance3D = CAPTURE_INDICATOR.instantiate()
 
-	new_indicator.scale = Vector3(10000, 5, 10000)
+	#new_indicator.mesh = new_indicator.mesh.duplicate()  # make mesh unique, so it doesn't copy material
+	#var material = StandardMaterial3D.new()
+	#material.albedo_color = capturing_player.color
+	#new_indicator.mesh.material = material
 
-	get_tree().get_root().add_child(new_indicator)
+	#new_indicator.scale = Vector3(10000, 5, 10000)
+
+	#get_tree().get_root().get_children()[0].add_child(new_indicator)
 	get_tree().paused = true
 
 
@@ -64,6 +82,8 @@ func _ready():
 
 
 func _process(delta):
+	if over:
+		return
 	if units.size() == 1:
 		var player: PlayerController = units.keys()[0]
 		if current_capture_time == 0:

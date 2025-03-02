@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://bl3poscqf6l24"]
+[gd_scene load_steps=11 format=3 uid="uid://bl3poscqf6l24"]
 
 [ext_resource type="PackedScene" uid="uid://5voogggaqiqc" path="res://scenes/units/base_unit_instantiable.tscn" id="1_m3rv1"]
 [ext_resource type="PackedScene" uid="uid://bnhfotdadapx" path="res://scenes/capture_zone/capture_zone.tscn" id="3_ma4q5"]
 [ext_resource type="PackedScene" uid="uid://cvrmwvmqtbyf4" path="res://scenes/player/player_base.tscn" id="4_ea2em"]
+[ext_resource type="Script" path="res://scripts/ui/2d/load_scene_button.gd" id="5_2a0d8"]
 [ext_resource type="PackedScene" uid="uid://tf5g7xb4ypp5" path="res://scenes/player/player_controller_full.tscn" id="5_xg7cn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gopso"]
@@ -122,3 +123,65 @@ player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerContr
 [node name="PlayerBase2" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_ea2em")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.272, 9.53676e-07, -4.48261)
 player = NodePath("../GridContainer/SubViewportContainer2/SubViewport/PlayerController2")
+
+[node name="Victory" type="Control" parent="."]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shadow" type="RichTextLabel" parent="Victory"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -23.0
+offset_right = 100.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[center][color=black][b]ONE TOOK,
+THE REST LEFT[/b][/color][/center]"
+
+[node name="VictoryText" type="RichTextLabel" parent="Victory"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_right = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[center][b]ONE TOOK,
+THE REST LEFT[/b][/center]"
+
+[node name="Button" type="Button" parent="Victory"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -19.0
+offset_top = 21.185
+offset_right = 19.0
+offset_bottom = 52.185
+grow_horizontal = 2
+grow_vertical = 2
+text = "
+"
+script = ExtResource("5_2a0d8")
+scene_path = "res://scenes/main/menu.tscn"

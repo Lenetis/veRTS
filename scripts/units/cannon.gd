@@ -19,7 +19,7 @@ func shoot(target: Vector3) -> void:
 	var new_projectile: BaseProjectile = projectile.instantiate()
 	new_projectile.initialize(player)
 	new_projectile.transform = global_transform
-	get_tree().get_root().add_child(new_projectile)
+	get_tree().get_root().get_children()[0].add_child(new_projectile)
 
 
 func _process(delta: float) -> void:

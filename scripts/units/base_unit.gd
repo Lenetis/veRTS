@@ -150,7 +150,7 @@ func add_destination(destination: Vector2) -> void:
 		new_segment.from = global_position
 	else:
 		new_segment.from = Vectors.to_vector3(destinations[destinations.size() - 2])
-	get_tree().get_root().add_child(new_segment)
+	get_tree().get_root().get_children()[0].add_child(new_segment)
 	line_segments.append(new_segment)
 	print(new_segment.from, "  ", new_segment.to)
 
