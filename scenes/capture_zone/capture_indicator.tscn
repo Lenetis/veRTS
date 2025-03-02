@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bk852jppcxa21"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_me8j3"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="CaptureIndicator" type="MeshInstance3D"]
+mesh = SubResource("BoxMesh_me8j3")
