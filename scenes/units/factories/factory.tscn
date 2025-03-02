@@ -6,7 +6,6 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_xtf4f"]
 
 [node name="Factory" type="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.24743, 0, -11.316)
 script = ExtResource("1_kfomf")
 spawned_unit = ExtResource("2_05dry")
 movable = false

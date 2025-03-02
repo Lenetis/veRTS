@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://di5g3mov0opi1"]
+
+[ext_resource type="Script" path="res://scripts/units/building.gd" id="1_x2d1u"]
+[ext_resource type="PackedScene" uid="uid://bosi0atcxtthj" path="res://scenes/units/infantry_unit.tscn" id="2_aw84n"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xtf4f"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_843bq"]
+radius = 0.75
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_uxrad"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bs1f8"]
+height = 3.0
+radius = 4.0
+
+[node name="InfantryFactory" type="RigidBody3D"]
+script = ExtResource("1_x2d1u")
+cost = 500.0
+spawned_unit = ExtResource("2_aw84n")
+unit_spawn_time = 5.0
+movable = false
+selectable = false
+hp = 300.0
+cooldown = 1e+09
+attack_range = 0.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_xtf4f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D" groups=["colorable"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0938113, 0)
+mesh = SubResource("SphereMesh_843bq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_uxrad")
+
+[node name="Area3DCameraRayBlocker" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3DCameraRayBlocker"]
+shape = SubResource("CylinderShape3D_bs1f8")

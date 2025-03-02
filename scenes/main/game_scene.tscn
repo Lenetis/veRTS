@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://bl3poscqf6l24"]
+[gd_scene load_steps=16 format=3 uid="uid://bl3poscqf6l24"]
 
 [ext_resource type="PackedScene" uid="uid://5voogggaqiqc" path="res://scenes/units/base_unit_instantiable.tscn" id="1_m3rv1"]
+[ext_resource type="PackedScene" uid="uid://di5g3mov0opi1" path="res://scenes/units/factories/infantry_factory.tscn" id="5_06ai1"]
 [ext_resource type="PackedScene" uid="uid://tf5g7xb4ypp5" path="res://scenes/player/player_controller_full.tscn" id="5_xg7cn"]
 [ext_resource type="Script" path="res://scripts/capture_zone/capture_zone.gd" id="6_2x8eb"]
 [ext_resource type="Script" path="res://scripts/player/player_base.gd" id="9_1kjy7"]
@@ -80,9 +81,6 @@ render_target_update_mode = 4
 [node name="PlayerController" parent="GridContainer/SubViewportContainer/SubViewport" instance=ExtResource("5_xg7cn")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 color = Color(0.985617, 0.242541, 0.190315, 1)
-money = 750.0
-base_income = 10.0
-visibility_id = 0
 key_up = 87
 key_down = 83
 key_left = 65
@@ -104,8 +102,6 @@ render_target_update_mode = 4
 
 [node name="PlayerController2" parent="GridContainer/SubViewportContainer2/SubViewport" instance=ExtResource("5_xg7cn")]
 color = Color(0.162026, 0.398144, 1, 1)
-money = 750.0
-base_income = 10.0
 visibility_id = 1
 
 [node name="Environment" type="Node" parent="."]
@@ -145,9 +141,10 @@ mesh = SubResource("CylinderMesh_5nta1")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CaptureZone" groups=["ground"]]
 shape = SubResource("CylinderShape3D_xjs1e")
 
-[node name="PlayerBase" type="Area3D" parent="."]
+[node name="PlayerBase" type="Area3D" parent="." node_paths=PackedStringArray("player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9123, 1.90735e-06, 4.51233)
 script = ExtResource("9_1kjy7")
+player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerBase"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0884855, 0)
@@ -155,6 +152,10 @@ mesh = SubResource("CylinderMesh_hwf4d")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerBase"]
 shape = SubResource("CylinderShape3D_5ybau")
+
+[node name="InfantryFactory" parent="PlayerBase" node_paths=PackedStringArray("player") instance=ExtResource("5_06ai1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.79181, -1.90735e-06, -3.54769)
+player = NodePath("../../GridContainer/SubViewportContainer/SubViewport/PlayerController")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.076375, 1.21294, -3.93654)

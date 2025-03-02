@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://dighw0icvth2o"]
+
+[ext_resource type="Script" path="res://scripts/units/building.gd" id="1_skjqq"]
+[ext_resource type="PackedScene" uid="uid://dsbrejamg60su" path="res://scenes/units/tank_unit.tscn" id="2_5acpq"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xtf4f"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_q37dn"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_uxrad"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_isxjn"]
+height = 3.0
+radius = 4.0
+
+[node name="TankFactory" type="RigidBody3D"]
+script = ExtResource("1_skjqq")
+spawned_unit = ExtResource("2_5acpq")
+movable = false
+selectable = false
+hp = 500.0
+cooldown = 1e+09
+attack_range = 0.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_xtf4f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D" groups=["colorable"]]
+mesh = SubResource("BoxMesh_q37dn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_uxrad")
+
+[node name="Area3DCameraRayBlocker" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3DCameraRayBlocker"]
+shape = SubResource("CylinderShape3D_isxjn")

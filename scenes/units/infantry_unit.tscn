@@ -1,0 +1,59 @@
+[gd_scene load_steps=10 format=3 uid="uid://bosi0atcxtthj"]
+
+[ext_resource type="Script" path="res://scripts/units/base_unit.gd" id="1_ektye"]
+[ext_resource type="Script" path="res://scripts/units/cannon.gd" id="2_221oq"]
+[ext_resource type="PackedScene" uid="uid://bt7k408k1losm" path="res://scenes/projectiles/infantry_projectile.tscn" id="3_pquye"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dw8wa"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8m78n"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_hm337"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_tvbdu"]
+size = Vector3(1, 0.415, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nsn6b"]
+size = Vector3(0.1, 0.1, 2)
+
+[sub_resource type="TorusMesh" id="TorusMesh_skk7k"]
+resource_local_to_scene = true
+inner_radius = 0.872
+outer_radius = 1.228
+ring_segments = 16
+
+[node name="InfantryUnit" type="RigidBody3D"]
+script = ExtResource("1_ektye")
+cooldown = 1.0
+speed = 5.0
+
+[node name="RangeArea3D" type="Area3D" parent="."]
+collision_layer = 0
+input_ray_pickable = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RangeArea3D"]
+shape = SubResource("SphereShape3D_dw8wa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_8m78n")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." groups=["colorable"]]
+mesh = SubResource("CylinderMesh_hm337")
+
+[node name="Cannon" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.715633, 0)
+script = ExtResource("2_221oq")
+projectile = ExtResource("3_pquye")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cannon"]
+mesh = SubResource("BoxMesh_tvbdu")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cannon/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.20277)
+mesh = SubResource("BoxMesh_nsn6b")
+
+[node name="SelectionMarker" type="MeshInstance3D" parent="." groups=["colorable"]]
+transform = Transform3D(1, 0, 0, 0, 0.01, 0, 0, 0, 1, 0, 0.599026, 0)
+mesh = SubResource("TorusMesh_skk7k")

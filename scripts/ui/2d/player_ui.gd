@@ -11,7 +11,7 @@ extends RichTextLabel
 @export var select_tooltip: String = "select unit   -   deselect all"
 @export var order_tooltip: String = "add move order   -   cancel last order"
 @export var weapon_tooltip: String = "little fire   -   heavy fire"
-@export var build_tooltip: String = "TODO"
+@export var build_tooltip: String = "infantry factory (500)   -   tank factory (1000)"
 
 var opening_active_color_tag: String
 var opening_inactive_color_tag: String
