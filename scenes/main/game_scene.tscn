@@ -1,10 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://bl3poscqf6l24"]
+[gd_scene load_steps=10 format=3 uid="uid://bl3poscqf6l24"]
 
 [ext_resource type="PackedScene" uid="uid://5voogggaqiqc" path="res://scenes/units/base_unit_instantiable.tscn" id="1_m3rv1"]
 [ext_resource type="PackedScene" uid="uid://bnhfotdadapx" path="res://scenes/capture_zone/capture_zone.tscn" id="3_ma4q5"]
-[ext_resource type="PackedScene" uid="uid://di5g3mov0opi1" path="res://scenes/units/factories/infantry_factory.tscn" id="5_06ai1"]
+[ext_resource type="PackedScene" uid="uid://cvrmwvmqtbyf4" path="res://scenes/player/player_base.tscn" id="4_ea2em"]
 [ext_resource type="PackedScene" uid="uid://tf5g7xb4ypp5" path="res://scenes/player/player_controller_full.tscn" id="5_xg7cn"]
-[ext_resource type="Script" path="res://scripts/player/player_base.gd" id="9_1kjy7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gopso"]
 albedo_color = Color(0.446777, 0.446777, 0.446777, 1)
@@ -24,18 +23,6 @@ size = Vector3(1, 1, 10)
 
 [sub_resource type="BoxMesh" id="BoxMesh_4pg0m"]
 size = Vector3(2, 1, 2)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_hwf4d"]
-bottom_radius = 10.0
-height = 0.1
-radial_segments = 8
-cap_top = false
-cap_bottom = false
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_5ybau"]
-radius = 10.0
-
-[sub_resource type="PrismMesh" id="PrismMesh_ct5qe"]
 
 [node name="GameScene" type="Node3D"]
 
@@ -126,23 +113,10 @@ mesh = SubResource("BoxMesh_4pg0m")
 
 [node name="CaptureZone" parent="." instance=ExtResource("3_ma4q5")]
 
-[node name="PlayerBase" type="Area3D" parent="." node_paths=PackedStringArray("player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9123, 1.90735e-06, 4.51233)
-script = ExtResource("9_1kjy7")
+[node name="PlayerBase" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_ea2em")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.8848, 0, -1.83127)
 player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerBase"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0884855, 0)
-mesh = SubResource("CylinderMesh_hwf4d")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerBase"]
-shape = SubResource("CylinderShape3D_5ybau")
-
-[node name="InfantryFactory" parent="PlayerBase" node_paths=PackedStringArray("player") instance=ExtResource("5_06ai1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.79181, -1.90735e-06, -3.54769)
-player = NodePath("../../GridContainer/SubViewportContainer/SubViewport/PlayerController")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.076375, 1.21294, -3.93654)
-layers = 4
-mesh = SubResource("PrismMesh_ct5qe")
+[node name="PlayerBase2" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_ea2em")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.272, 9.53676e-07, -4.48261)
+player = NodePath("../GridContainer/SubViewportContainer2/SubViewport/PlayerController2")

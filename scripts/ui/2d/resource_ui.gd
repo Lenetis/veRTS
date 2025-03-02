@@ -12,7 +12,10 @@ func update_text():
 		+ "\n"
 		+ "(+"
 		+ str(player.base_income)
-		+ ")"
+		+ ")\n"
+		+ "[color="
+		+ player.color.to_html(true)
+		+ "]════════════════════[/color]"
 		+ "[/center]"
 	)
 

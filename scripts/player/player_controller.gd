@@ -56,7 +56,7 @@ var state_secondary_dict: Dictionary = {
 @export var view_toggle_hold_time: float = 0.75
 var view_hold_timer: float = 0
 
-var current_view: ViewMode.Mode = ViewMode.Mode.UNIT
+var current_view: ViewMode.Mode = ViewMode.Mode.SATELLITE
 var current_state: State = State.ZOOM
 
 # array of units that are currently selected

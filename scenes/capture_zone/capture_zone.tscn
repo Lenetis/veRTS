@@ -9,7 +9,6 @@ top_radius = 5.0
 radius = 5.0
 
 [node name="CaptureZone" type="Area3D" groups=["ground"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.215312, 0, -19.1354)
 script = ExtResource("1_vswee")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." groups=["ground"]]
