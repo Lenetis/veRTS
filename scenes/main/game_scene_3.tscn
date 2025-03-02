@@ -1,0 +1,228 @@
+[gd_scene load_steps=10 format=3 uid="uid://vrtje18wg1lw"]
+
+[ext_resource type="PackedScene" uid="uid://tf5g7xb4ypp5" path="res://scenes/player/player_controller_full.tscn" id="1_t5k74"]
+[ext_resource type="PackedScene" uid="uid://bnhfotdadapx" path="res://scenes/capture_zone/capture_zone.tscn" id="2_g5bnm"]
+[ext_resource type="PackedScene" uid="uid://cvrmwvmqtbyf4" path="res://scenes/player/player_base.tscn" id="3_2qcj1"]
+[ext_resource type="Script" path="res://scripts/ui/2d/load_scene_button.gd" id="4_jqx0x"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gopso"]
+albedo_color = Color(0.356854, 0.469866, 0.493693, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_f8yox"]
+material = SubResource("StandardMaterial3D_gopso")
+top_radius = 50.0
+bottom_radius = 50.0
+height = 0.05
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_206ru"]
+height = 0.1
+radius = 50.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_bucfs"]
+size = Vector3(1, 1, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4pg0m"]
+size = Vector3(2, 1, 2)
+
+[node name="GameScene" type="Node3D"]
+process_mode = 1
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="GridContainer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(574, 322)
+render_target_update_mode = 4
+
+[node name="PlayerController" parent="GridContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_t5k74")]
+color = Color(0.985617, 0.242541, 0.190315, 1)
+money = 500.0
+key_up = 87
+key_down = 83
+key_left = 65
+key_right = 68
+key_action = 90
+key_secondary = 88
+key_option = 67
+
+[node name="SubViewportContainer2" type="SubViewportContainer" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="GridContainer/SubViewportContainer2"]
+handle_input_locally = false
+size = Vector2i(574, 322)
+render_target_update_mode = 4
+
+[node name="PlayerController2" parent="GridContainer/SubViewportContainer2/SubViewport" instance=ExtResource("1_t5k74")]
+transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 0, 0, 0)
+color = Color(0.162026, 0.398144, 1, 1)
+money = 500.0
+visibility_id = 1
+
+[node name="SubViewportContainer3" type="SubViewportContainer" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="GridContainer/SubViewportContainer3"]
+handle_input_locally = false
+size = Vector2i(574, 322)
+render_target_update_mode = 4
+
+[node name="PlayerController2" parent="GridContainer/SubViewportContainer3/SubViewport" instance=ExtResource("1_t5k74")]
+transform = Transform3D(-0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, 0, 0, 0)
+color = Color(0.341176, 0.882353, 0, 1)
+money = 500.0
+visibility_id = 2
+key_up = 84
+key_down = 71
+key_left = 70
+key_right = 72
+key_action = 86
+key_secondary = 66
+key_option = 78
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(1.5, 0, 0, 0, 1, 0, 0, 0, 1.5, 0, 0, 0)
+mesh = SubResource("CylinderMesh_f8yox")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="Environment/Ground" groups=["ground"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Ground/Area3D"]
+shape = SubResource("CylinderShape3D_206ru")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.205854, -0.636579, 0.74323, -0.912368, 0.149779, 0.380987, -0.353849, -0.756527, -0.549962, 0, 3.51522, 0)
+shadow_enabled = true
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(0.00991089, -0.951069, 0.308817, 0.499897, 0.272183, 0.822204, -0.866028, 0.146228, 0.478135, 0, 3.51522, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment"]
+visible = false
+mesh = SubResource("BoxMesh_bucfs")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, -4.30166)
+visible = false
+mesh = SubResource("BoxMesh_4pg0m")
+
+[node name="Victory" type="Control" parent="."]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shadow" type="RichTextLabel" parent="Victory"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -23.0
+offset_right = 100.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[center][color=black][b]ONE TOOK,
+THE REST LEFT[/b][/color][/center]"
+
+[node name="VictoryText" type="RichTextLabel" parent="Victory"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_right = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[center][b]ONE TOOK,
+THE REST LEFT[/b][/center]"
+
+[node name="Button" type="Button" parent="Victory"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -19.0
+offset_top = 21.185
+offset_right = 19.0
+offset_bottom = 52.185
+grow_horizontal = 2
+grow_vertical = 2
+text = "
+"
+script = ExtResource("4_jqx0x")
+scene_path = "res://scenes/main/menu.tscn"
+
+[node name="PlayerBase" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_2qcj1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 60)
+player = NodePath("../GridContainer/SubViewportContainer/SubViewport/PlayerController")
+
+[node name="PlayerBase2" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_2qcj1")]
+transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 51.8568, 0, -29.9396)
+player = NodePath("../GridContainer/SubViewportContainer2/SubViewport/PlayerController2")
+
+[node name="PlayerBase3" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_2qcj1")]
+transform = Transform3D(-0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, -51.8247, 0, -29.921)
+player = NodePath("../GridContainer/SubViewportContainer3/SubViewport/PlayerController2")
+
+[node name="CaptureZone6" parent="." instance=ExtResource("2_g5bnm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -29.8916)
+time_to_capture = 45.0
+
+[node name="CaptureZone4" parent="." instance=ExtResource("2_g5bnm")]
+transform = Transform3D(-0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, -13.0394, 0, -7.52832)
+time_to_capture = 45.0
+
+[node name="CaptureZone7" parent="." instance=ExtResource("2_g5bnm")]
+transform = Transform3D(-0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, 25.9711, 0, 14.9944)
+time_to_capture = 45.0
+
+[node name="CaptureZone3" parent="." instance=ExtResource("2_g5bnm")]
+transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 12.9158, 0, -7.45692)
+time_to_capture = 45.0
+
+[node name="CaptureZone8" parent="." instance=ExtResource("2_g5bnm")]
+transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, -25.9722, 0, 14.9951)
+time_to_capture = 45.0
+
+[node name="CaptureZone2" parent="." instance=ExtResource("2_g5bnm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 14.8318)
+time_to_capture = 45.0

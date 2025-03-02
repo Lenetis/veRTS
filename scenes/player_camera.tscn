@@ -8,6 +8,9 @@
 script = ExtResource("1_ycj03")
 projectile_small = ExtResource("2_jnq04")
 projectile_big = ExtResource("3_hpkas")
+satellite_move_speed_far = 70.0
+satellite_zoom_speed = 25.0
+satellite_min_height = 15.0
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -1000)
