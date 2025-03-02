@@ -25,6 +25,7 @@ size = Vector3(1, 1, 10)
 size = Vector3(2, 1, 2)
 
 [node name="GameScene" type="Node3D"]
+process_mode = 1
 
 [node name="BaseUnit" parent="." node_paths=PackedStringArray("player") instance=ExtResource("1_m3rv1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.87735, 0, -11.5217)
@@ -112,6 +113,7 @@ transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 
 mesh = SubResource("BoxMesh_4pg0m")
 
 [node name="CaptureZone" parent="." instance=ExtResource("3_ma4q5")]
+time_to_capture = 1.0
 
 [node name="PlayerBase" parent="." node_paths=PackedStringArray("player") instance=ExtResource("4_ea2em")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.8848, 0, -1.83127)

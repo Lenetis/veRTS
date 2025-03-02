@@ -44,6 +44,20 @@ func update_indicators() -> void:
 		capture_indicators.append(new_indicator)
 
 
+func win():
+	var new_indicator: MeshInstance3D = CAPTURE_INDICATOR.instantiate()
+
+	new_indicator.mesh = new_indicator.mesh.duplicate()  # make mesh unique, so it doesn't copy material
+	var material = StandardMaterial3D.new()
+	material.albedo_color = capturing_player.color
+	new_indicator.mesh.material = material
+
+	new_indicator.scale = Vector3(10000, 5, 10000)
+
+	get_tree().get_root().add_child(new_indicator)
+	get_tree().paused = true
+
+
 func _ready():
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
@@ -72,6 +86,7 @@ func _process(delta):
 
 	if current_capture_time >= time_to_capture:
 		print("VICTORY!!! ", capturing_player)
+		win()
 
 
 func _on_body_entered(body: RigidBody3D) -> void:

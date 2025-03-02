@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/ui/2d/center_ui.gd" id="8_o3gon"]
 
 [node name="PlayerController" type="Node3D"]
+process_mode = 3
 script = ExtResource("1_wtisb")
 buildings = Array[PackedScene]([ExtResource("2_l7ewd"), ExtResource("3_10hpw")])
 key_up = 4194320
