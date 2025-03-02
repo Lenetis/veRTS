@@ -100,6 +100,45 @@ key_action = 86
 key_secondary = 66
 key_option = 78
 
+[node name="Control" type="Control" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Shadow2" type="RichTextLabel" parent="GridContainer/Control"]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -258.0
+offset_top = -67.0
+offset_right = 242.0
+offset_bottom = 133.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/bold_font_size = 75
+bbcode_enabled = true
+text = "[center][color=black][b]veRTS[/b][/color][/center]"
+
+[node name="VictoryText2" type="RichTextLabel" parent="GridContainer/Control"]
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -258.0
+offset_top = -75.0
+offset_right = 242.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/bold_font_size = 75
+bbcode_enabled = true
+text = "[center][b]veRTS[/b][/center]"
+
 [node name="Environment" type="Node" parent="."]
 
 [node name="Ground" type="MeshInstance3D" parent="Environment"]
