@@ -29,6 +29,8 @@ var state_secondary_dict: Dictionary = {
 ## Buildable buildings that can be built
 @export var buildings: Array[PackedScene]
 
+@export var color: Color
+
 @export var money: float = 750
 @export var base_income: float = 10
 

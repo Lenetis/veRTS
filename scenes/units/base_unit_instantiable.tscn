@@ -17,6 +17,7 @@ size = Vector3(1, 0.415, 1)
 size = Vector3(0.1, 0.1, 2)
 
 [sub_resource type="TorusMesh" id="TorusMesh_skk7k"]
+resource_local_to_scene = true
 inner_radius = 0.872
 outer_radius = 1.228
 ring_segments = 16
@@ -35,7 +36,7 @@ shape = SubResource("SphereShape3D_dw8wa")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_8m78n")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." groups=["colorable"]]
 mesh = SubResource("CylinderMesh_hm337")
 
 [node name="Cannon" type="Node3D" parent="."]
@@ -51,6 +52,6 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.20277)
 mesh = SubResource("BoxMesh_nsn6b")
 
-[node name="SelectionMarker" type="MeshInstance3D" parent="."]
+[node name="SelectionMarker" type="MeshInstance3D" parent="." groups=["colorable"]]
 transform = Transform3D(1, 0, 0, 0, 0.01, 0, 0, 0, 1, 0, 0.599026, 0)
 mesh = SubResource("TorusMesh_skk7k")
